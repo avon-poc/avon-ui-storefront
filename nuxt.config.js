@@ -37,7 +37,11 @@ export default {
         once: true
       }
     ],
-    script: []
+    script: [{
+      type: "text/javascript",
+      src: "https://cdn.esales.apptus.com/api/apptus-esales-api-2.2.2.js"
+    }
+    ]
   },
   loading: { color: '#fff' },
   router: {

@@ -11,9 +11,9 @@
               <span></span>
               <span></span>
               <span></span>
-              <m>MENU</m>
+              <small>MENU</small>
             </div>
-            <sidemenu
+            <aside
               class="smartphone-only"
               v-bind:style="{ left: menuLeftPosition }"
             >
@@ -47,7 +47,7 @@
                     :coverage="1"
                 /></a>
               </div>
-            </sidemenu>
+            </aside>
           </div>
         </nav>
         <div class="logo">
@@ -89,6 +89,7 @@
                 r="1.2898706"
                 cy="7.3147874"
                 cx="6.04037"
+                class="whiteFill"
                 style="
                   fill: #ffffff;
                   stroke-width: 1px;
@@ -98,6 +99,7 @@
                 "
               ></circle>
               <circle
+                class="whiteFill"
                 style="
                   fill: #ffffff;
                   fill-opacity: 1;
@@ -124,6 +126,7 @@
                   stroke-linejoin: miter;
                   stroke-opacity: 1;
                 "
+                class="whiteFill"
               ></path>
               <path
                 d="m 2.9258041,2.1867649 15.2267659,0 -1.22695,1.2584104 0.471903,0.5977449 -13.7481329,0 0.5033641,-0.5977449 z"
@@ -137,6 +140,7 @@
                   stroke-opacity: 1;
                   fill-opacity: 1;
                 "
+                class="whiteFill"
               ></path>
             </svg>
             <span class="cart-count">3</span>
@@ -150,7 +154,6 @@
         aria-label="Search"
         class="sf-header__search"
         :value="term"
-        @input="handleSearch"
         @keydown.enter="handleSearch($event)"
         @focus="isSearchOpen = true"
         @keydown.esc="closeSearch"
@@ -301,13 +304,15 @@ export default {
     };
 
     const handleSearch = debounce(async (paramValue) => {
+      console.log("searchValue", paramValue);
       if (!paramValue.target) {
         term.value = paramValue;
       } else {
         term.value = paramValue.target.value;
       }
+
       setTermForUrl(term.value);
-      await search(getSearchTermFromUrl(term.value));
+      //await search(getSearchTermFromUrl(term.value));
     }, 1000);
 
     const isMobile = computed(() => mapMobileObserver().isMobile.get());
@@ -434,7 +439,7 @@ export default {
             margin-top: 0;
           }
         }
-        m {
+        small {
           font-size: 11px;
           color: #000;
           font-family: var(--font-family);
@@ -469,6 +474,9 @@ export default {
         #Svg_bag {
           width: 31px;
           color: var(--c-primary);
+          .whiteFill {
+            fill: #fff;
+          }
         }
       }
     }
@@ -482,7 +490,7 @@ export default {
     padding: 0px 17px;
     margin-top: 6px;
   }
-  sidemenu.smartphone-only {
+  aside.smartphone-only {
     display: flex;
     background: #fff;
     justify-content: flex-start;

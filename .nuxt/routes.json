@@ -3,7 +3,8 @@
     "name": "Category___en",
     "path": "/Category",
     "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Category.vue",
-    "chunkName": "pages/Category"
+    "chunkName": "pages/Category",
+    "_name": "_189bb199"
   },
   {
     "name": "checkout___en",
@@ -13,24 +14,29 @@
       {
         "path": "billing",
         "name": "billing___en",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Billing.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Billing.vue",
+        "_name": "_3a2a13a6"
       },
       {
         "path": "payment",
         "name": "payment___en",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Payment.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Payment.vue",
+        "_name": "_fccb6f90"
       },
       {
         "path": "shipping",
         "name": "shipping___en",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Shipping.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Shipping.vue",
+        "_name": "_8ba3f428"
       },
       {
         "path": "thank-you",
         "name": "thank-you___en",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/ThankYou.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/ThankYou.vue",
+        "_name": "_b8885cda"
       }
-    ]
+    ],
+    "_name": "_5662dde1"
   },
   {
     "name": "Checkout___en",
@@ -42,38 +48,45 @@
         "name": "Checkout-Billing___en",
         "path": "Billing",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Billing.vue",
-        "chunkName": "pages/Checkout/Billing"
+        "chunkName": "pages/Checkout/Billing",
+        "_name": "_3a2a13a6"
       },
       {
         "name": "Checkout-Payment___en",
         "path": "Payment",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Payment.vue",
-        "chunkName": "pages/Checkout/Payment"
+        "chunkName": "pages/Checkout/Payment",
+        "_name": "_fccb6f90"
       },
       {
         "name": "Checkout-Shipping___en",
         "path": "Shipping",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Shipping.vue",
-        "chunkName": "pages/Checkout/Shipping"
+        "chunkName": "pages/Checkout/Shipping",
+        "_name": "_8ba3f428"
       },
       {
         "name": "Checkout-ThankYou___en",
         "path": "ThankYou",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/ThankYou.vue",
-        "chunkName": "pages/Checkout/ThankYou"
+        "chunkName": "pages/Checkout/ThankYou",
+        "_name": "_b8885cda"
       }
-    ]
+    ],
+    "_name": "_5662dde1"
   },
   {
     "name": "home___de",
     "path": "/de",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Home.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Home.vue",
+    "_name": "_3b080a7a"
   },
   {
     "name": "Home___en",
     "path": "/Home",
     "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Home.vue",
-    "chunkName": "pages/Home"
+    "chunkName": "pages/Home",
+    "_name": "_3b080a7a"
   },
   {
     "name": "MyAccount___en",
@@ -85,57 +98,74 @@
         "name": "MyAccount-BillingDetails___en",
         "path": "BillingDetails",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/BillingDetails.vue",
-        "chunkName": "pages/MyAccount/BillingDetails"
+        "chunkName": "pages/MyAccount/BillingDetails",
+        "_name": "_3f513770"
       },
       {
         "name": "MyAccount-LoyaltyCard___en",
         "path": "LoyaltyCard",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/LoyaltyCard.vue",
-        "chunkName": "pages/MyAccount/LoyaltyCard"
+        "chunkName": "pages/MyAccount/LoyaltyCard",
+        "_name": "_37d3e09d"
       },
       {
         "name": "MyAccount-MyNewsletter___en",
         "path": "MyNewsletter",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/MyNewsletter.vue",
-        "chunkName": "pages/MyAccount/MyNewsletter"
+        "chunkName": "pages/MyAccount/MyNewsletter",
+        "_name": "_1e8608ee"
       },
       {
         "name": "MyAccount-MyProfile___en",
         "path": "MyProfile",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/MyProfile.vue",
-        "chunkName": "pages/MyAccount/MyProfile"
+        "chunkName": "pages/MyAccount/MyProfile",
+        "_name": "_60a7e6c4"
       },
       {
         "name": "MyAccount-MyReviews___en",
         "path": "MyReviews",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/MyReviews.vue",
-        "chunkName": "pages/MyAccount/MyReviews"
+        "chunkName": "pages/MyAccount/MyReviews",
+        "_name": "_afaa6f94"
       },
       {
         "name": "MyAccount-OrderHistory___en",
         "path": "OrderHistory",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/OrderHistory.vue",
-        "chunkName": "pages/MyAccount/OrderHistory"
+        "chunkName": "pages/MyAccount/OrderHistory",
+        "_name": "_0c69ab62"
       },
       {
         "name": "MyAccount-ShippingDetails___en",
         "path": "ShippingDetails",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/ShippingDetails.vue",
-        "chunkName": "pages/MyAccount/ShippingDetails"
+        "chunkName": "pages/MyAccount/ShippingDetails",
+        "_name": "_5ab11e5b"
       }
-    ]
+    ],
+    "_name": "_9dd9b754"
   },
   {
     "name": "Product___en",
     "path": "/Product",
     "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Product.vue",
-    "chunkName": "pages/Product"
+    "chunkName": "pages/Product",
+    "_name": "_5cadd2a4"
+  },
+  {
+    "name": "Search___en",
+    "path": "/Search",
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Search.vue",
+    "chunkName": "pages/Search",
+    "_name": "_78595a03"
   },
   {
     "name": "Category___de",
     "path": "/de/Category",
     "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Category.vue",
-    "chunkName": "pages/Category"
+    "chunkName": "pages/Category",
+    "_name": "_189bb199"
   },
   {
     "name": "checkout___de",
@@ -145,24 +175,29 @@
       {
         "path": "billing",
         "name": "billing___de",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Billing.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Billing.vue",
+        "_name": "_3a2a13a6"
       },
       {
         "path": "payment",
         "name": "payment___de",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Payment.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Payment.vue",
+        "_name": "_fccb6f90"
       },
       {
         "path": "shipping",
         "name": "shipping___de",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Shipping.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Shipping.vue",
+        "_name": "_8ba3f428"
       },
       {
         "path": "thank-you",
         "name": "thank-you___de",
-        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/ThankYou.vue"
+        "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/ThankYou.vue",
+        "_name": "_b8885cda"
       }
-    ]
+    ],
+    "_name": "_5662dde1"
   },
   {
     "name": "Checkout___de",
@@ -174,33 +209,39 @@
         "name": "Checkout-Billing___de",
         "path": "Billing",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Billing.vue",
-        "chunkName": "pages/Checkout/Billing"
+        "chunkName": "pages/Checkout/Billing",
+        "_name": "_3a2a13a6"
       },
       {
         "name": "Checkout-Payment___de",
         "path": "Payment",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Payment.vue",
-        "chunkName": "pages/Checkout/Payment"
+        "chunkName": "pages/Checkout/Payment",
+        "_name": "_fccb6f90"
       },
       {
         "name": "Checkout-Shipping___de",
         "path": "Shipping",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/Shipping.vue",
-        "chunkName": "pages/Checkout/Shipping"
+        "chunkName": "pages/Checkout/Shipping",
+        "_name": "_8ba3f428"
       },
       {
         "name": "Checkout-ThankYou___de",
         "path": "ThankYou",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Checkout/ThankYou.vue",
-        "chunkName": "pages/Checkout/ThankYou"
+        "chunkName": "pages/Checkout/ThankYou",
+        "_name": "_b8885cda"
       }
-    ]
+    ],
+    "_name": "_5662dde1"
   },
   {
     "name": "Home___de",
     "path": "/de/Home",
     "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Home.vue",
-    "chunkName": "pages/Home"
+    "chunkName": "pages/Home",
+    "_name": "_3b080a7a"
   },
   {
     "name": "MyAccount___de",
@@ -212,85 +253,108 @@
         "name": "MyAccount-BillingDetails___de",
         "path": "BillingDetails",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/BillingDetails.vue",
-        "chunkName": "pages/MyAccount/BillingDetails"
+        "chunkName": "pages/MyAccount/BillingDetails",
+        "_name": "_3f513770"
       },
       {
         "name": "MyAccount-LoyaltyCard___de",
         "path": "LoyaltyCard",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/LoyaltyCard.vue",
-        "chunkName": "pages/MyAccount/LoyaltyCard"
+        "chunkName": "pages/MyAccount/LoyaltyCard",
+        "_name": "_37d3e09d"
       },
       {
         "name": "MyAccount-MyNewsletter___de",
         "path": "MyNewsletter",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/MyNewsletter.vue",
-        "chunkName": "pages/MyAccount/MyNewsletter"
+        "chunkName": "pages/MyAccount/MyNewsletter",
+        "_name": "_1e8608ee"
       },
       {
         "name": "MyAccount-MyProfile___de",
         "path": "MyProfile",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/MyProfile.vue",
-        "chunkName": "pages/MyAccount/MyProfile"
+        "chunkName": "pages/MyAccount/MyProfile",
+        "_name": "_60a7e6c4"
       },
       {
         "name": "MyAccount-MyReviews___de",
         "path": "MyReviews",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/MyReviews.vue",
-        "chunkName": "pages/MyAccount/MyReviews"
+        "chunkName": "pages/MyAccount/MyReviews",
+        "_name": "_afaa6f94"
       },
       {
         "name": "MyAccount-OrderHistory___de",
         "path": "OrderHistory",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/OrderHistory.vue",
-        "chunkName": "pages/MyAccount/OrderHistory"
+        "chunkName": "pages/MyAccount/OrderHistory",
+        "_name": "_0c69ab62"
       },
       {
         "name": "MyAccount-ShippingDetails___de",
         "path": "ShippingDetails",
         "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount/ShippingDetails.vue",
-        "chunkName": "pages/MyAccount/ShippingDetails"
+        "chunkName": "pages/MyAccount/ShippingDetails",
+        "_name": "_5ab11e5b"
       }
-    ]
+    ],
+    "_name": "_9dd9b754"
   },
   {
     "name": "Product___de",
     "path": "/de/Product",
     "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Product.vue",
-    "chunkName": "pages/Product"
+    "chunkName": "pages/Product",
+    "_name": "_5cadd2a4"
+  },
+  {
+    "name": "Search___de",
+    "path": "/de/Search",
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Search.vue",
+    "chunkName": "pages/Search",
+    "_name": "_78595a03"
   },
   {
     "name": "my-account___de",
     "path": "/de/my-account/:pageName?",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount.vue",
+    "_name": "_9dd9b754"
   },
   {
     "name": "product___de",
     "path": "/de/p/:id/:slug",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Product.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Product.vue",
+    "_name": "_5cadd2a4"
   },
   {
     "name": "category___de",
     "path": "/de/c/:slug_1/:slug_2?/:slug_3?/:slug_4?/:slug_5?",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Category.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Category.vue",
+    "_name": "_189bb199"
   },
   {
     "name": "my-account___en",
     "path": "/my-account/:pageName?",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/MyAccount.vue",
+    "_name": "_9dd9b754"
   },
   {
     "name": "product___en",
     "path": "/p/:id/:slug",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Product.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Product.vue",
+    "_name": "_5cadd2a4"
   },
   {
     "name": "category___en",
     "path": "/c/:slug_1/:slug_2?/:slug_3?/:slug_4?/:slug_5?",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Category.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Category.vue",
+    "_name": "_189bb199"
   },
   {
     "name": "home___en",
     "path": "/",
-    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Home.vue"
+    "component": "/Users/soe-admin/Documents/vueStoreFront/vsfnew/avonsite/pages/Home.vue",
+    "_name": "_3b080a7a"
   }
 ]

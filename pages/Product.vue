@@ -113,7 +113,7 @@
                     : options.variantValue[0].value
                 "
                 :imagesrc="
-                  options.variantImage ? options.variantImage[0].label[i] : ''
+                  options.variantImage ? options.variantImage[i].label[0] : ''
                 "
                 @click:shadeChange="changeShade(variant.value)"
               />

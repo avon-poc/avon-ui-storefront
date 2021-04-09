@@ -20,6 +20,7 @@ const _afaa6f94 = () => interopDefault(import('../pages/MyAccount/MyReviews.vue'
 const _0c69ab62 = () => interopDefault(import('../pages/MyAccount/OrderHistory.vue' /* webpackChunkName: "pages/MyAccount/OrderHistory" */))
 const _5ab11e5b = () => interopDefault(import('../pages/MyAccount/ShippingDetails.vue' /* webpackChunkName: "pages/MyAccount/ShippingDetails" */))
 const _5cadd2a4 = () => interopDefault(import('../pages/Product.vue' /* webpackChunkName: "pages/Product" */))
+const _78595a03 = () => interopDefault(import('../pages/Search.vue' /* webpackChunkName: "pages/Search" */))
 
 const emptyFn = () => {}
 
@@ -124,6 +125,10 @@ export const routerOptions = {
     component: _5cadd2a4,
     name: "Product___en"
   }, {
+    path: "/Search",
+    component: _78595a03,
+    name: "Search___en"
+  }, {
     path: "/de/Category",
     component: _189bb199,
     name: "Category___de"
@@ -210,6 +215,10 @@ export const routerOptions = {
     path: "/de/Product",
     component: _5cadd2a4,
     name: "Product___de"
+  }, {
+    path: "/de/Search",
+    component: _78595a03,
+    name: "Search___de"
   }, {
     path: "/de/my-account/:pageName?",
     component: _9dd9b754,

@@ -89,6 +89,7 @@ const useUiHelpers = () => {
 
   const setTermForUrl = (term: string) => {
     instance.$router.push({
+      path: '/search/',
       query: {
         ...getFiltersDataFromUrl(instance, false),
         term: term || undefined

@@ -147,7 +147,7 @@ h4 {
   --c-primary: #7f28c4;
   --c-avon-secondary: red;
   --search-bar-button-right: 10px;
-  --font-family: Montserrat, Arial;
+  --font-family: Roboto, Arial;
   --c-background-one: #fff;
   --c-background-two: rgb(241, 241, 241);
   --c-color-one: rgb(49, 49, 49);
