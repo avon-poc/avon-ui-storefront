@@ -1,4 +1,4 @@
-# theme
+# theme  
 
 > My breathtaking Nuxt.js project
 
