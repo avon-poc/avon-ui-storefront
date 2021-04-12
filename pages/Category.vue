@@ -560,7 +560,7 @@ export default {
     onSSR(async () => {
       await search(th.getFacetsFromURL());
       console.log("products>>>>>>>>>>>>", products.value[0]);
-      console.log("breadcrumbs>>>>>>>>>>>>", breadcrumbs.value[1].text);
+      console.log("breadcrumbs>>>>>>>>>>>> ", breadcrumbs.value[1].text);
       console.log("sortBy>>>>>>>>>>>>", th.getFacetsFromURL());
     });
 

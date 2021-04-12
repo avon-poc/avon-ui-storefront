@@ -130,5 +130,16 @@ export default {
   'Payment': 'Payment',
   'Order summary': 'Order summary',
   'Products': 'Products',
-  'Total': 'Total'
+  'Total': 'Total',
+  "Bestsellers Top Rated Whats New": "Bestsellers Top Rated What's New",
+  "View Colour Options": "View Colour Options",
+  "Get Exclusive Special Offers & The Latest News":"Get Exclusive Special Offers & The Latest News",
+  "Your Shopping Bag":"Your Shopping Bag",
+  "Inc. VAT":"Inc. VAT",
+  "Excludes delivery":"Excludes delivery",
+  'Enter voucher code': 'Enter voucher code',
+  'We accept':'We accept',
+  'SUBTOTAL':'SUBTOTAL',
+  "You do not have any items in your bag":"You do not have any items in your bag",
+  "Shopping bag empty":"Shopping bag empty"
 };
