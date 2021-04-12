@@ -540,6 +540,7 @@ export default {
     const facets = computed(() =>
       facetGetters.getGrouped(result.value, ["color", "size"])
     );
+    //test code commit
     const pagination = computed(() => facetGetters.getPagination(result.value));
     const activeCategory = computed(() => {
       const items = categoryTree.value.items;
