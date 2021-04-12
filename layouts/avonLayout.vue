@@ -35,6 +35,7 @@ import CartSidebar from "~/components/CartSidebar.vue";
 import WishlistSidebar from "~/components/WishlistSidebar.vue";
 import LoginModal from "~/components/LoginModal.vue";
 import LazyHydrate from "vue-lazy-hydration";
+import {ref, onMounted} from '@vue/composition-api';
 
 export default {
   components: {
@@ -47,6 +48,13 @@ export default {
     WishlistSidebar,
     LoginModal,
   },
+  setup(props,{root}){
+       onMounted(()=>{
+         let rep =sessionStorage.getItem('rep')
+         if(rep)
+           root.$router.push('/avon/'+rep);
+       })
+  }
 };
 </script>
 

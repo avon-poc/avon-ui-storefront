@@ -52,7 +52,14 @@ export default {
       } else {
         return { x: 0, y: 0 };
       }
-    }
+    },
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'HomeWithRep',
+        path: '/avon/:name',
+        component: resolve(__dirname, 'pages/HomeWithRep.vue')
+      })
+   }
   },
   buildModules: [
     // to core

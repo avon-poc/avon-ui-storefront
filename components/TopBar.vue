@@ -6,29 +6,40 @@
       }}</SfButton>
     </template>
     <template #center>
-      <p>{{ $t("Download") }}</p>
-      <SfButton
-        data-cy="top-bar-btn_more"
-        class="topbar__button sf-button--text"
-        >{{ $t("Find out more") }}</SfButton
-      >
-    </template>
-    <template #right>
-      <LocaleSelector />
+      <div>
+      <nuxt-link :to="localePath('/rep')" v-if="!rep">
+        <!-- <p>{{ $t('Download') }}</p> -->
+        <SfButton data-cy="top-bar-btn_more" class="topbar__button sf-button--text">{{ $t('Find A Representative') }}</SfButton>
+      </nuxt-link>
+      <p v-else> <i>you are shopping with:</i> <span style="color:blueviolet">{{rep}}</span></p>
+      </div>
+      </template>
+      <template #right>
+        <LocaleSelector />
     </template>
   </SfTopBar>
 </template>
 
 <script>
-import { SfButton, SfTopBar } from "@storefront-ui/vue";
-import LocaleSelector from "./LocaleSelector";
+import { SfButton, SfTopBar } from '@storefront-ui/vue';
+import LocaleSelector from './LocaleSelector';
+import {ref, onMounted} from '@vue/composition-api';
 
 export default {
   components: {
     SfTopBar,
     SfButton,
-    LocaleSelector,
+    LocaleSelector
   },
+  setup(){
+    const rep = ref('');
+    onMounted(()=>{
+        rep.value = sessionStorage.getItem('rep');
+    })
+    return {
+      rep
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
