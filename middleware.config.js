@@ -28,6 +28,13 @@ module.exports = {
         },
         currency: 'GBP',
         country: 'GB'
+      },
+      customQueries: {
+        'my-products-query': ({ query, variables }) => {
+          console.log("queryvt", query);
+          console.log({ variables });
+          return { query, variables }
+        }
       }
     }
   }

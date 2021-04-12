@@ -174,6 +174,7 @@ import {
   SfHeading,
   SfArrow,
   SfButton,
+  SfLink,
 } from "@storefront-ui/vue";
 import InstagramFeed from "~/components/InstagramFeed.vue";
 import MobileStoreBanner from "~/components/MobileStoreBanner.vue";
@@ -191,6 +192,7 @@ export default {
     SfHeading,
     SfArrow,
     SfButton,
+    SfLink,
     MobileStoreBanner,
     LazyHydrate,
   },

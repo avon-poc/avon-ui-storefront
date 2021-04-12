@@ -447,7 +447,6 @@ export default {
 
     // search({ customQuery: { products: 'my-products-query' } });
     const isMobile = computed(() => mapMobileObserver().isMobile.get());
-    console.log("products", products);
     const product = computed(
       () =>
         productGetters.getFiltered(products.value, {
@@ -510,7 +509,7 @@ export default {
     );
 
     onSSR(async () => {
-      await search({ id });
+      await search({ id, customQuery: { products: "my-products-query" } });
       await searchRelatedProducts({ catId: [categories.value[0]], limit: 8 });
       await searchReviews({ productId: id });
       await searchCategory({ catId: [categories.value[0]] });

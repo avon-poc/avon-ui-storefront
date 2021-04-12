@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header-avon">
+    <div class="header-avon smartphone-only">
       <div class="topbar">
         <nav>
           <div class="mobile-menu">
@@ -154,9 +154,7 @@
         aria-label="Search"
         class="sf-header__search"
         :value="term"
-        @keydown.enter="handleSearch($event)"
-        @focus="isSearchOpen = true"
-        @keydown.esc="closeSearch"
+        v-on:keyup.enter="handleSearch($event)"
         v-click-outside="closeSearch"
       >
         <template #icon>
@@ -183,6 +181,125 @@
         </template>
       </SfSearchBar>
     </div>
+    <div class="desktop-only">
+      <SfHeader
+        data-cy="app-header"
+        class="sf-header--has-mobile-search"
+        :class="{ 'header-on-top': isSearchOpen }"
+      >
+        <!-- TODO: add mobile view buttons after SFUI team PR -->
+        <template #logo>
+          <nuxt-link
+            data-cy="app-header-url_logo"
+            :to="localePath('/')"
+            class="sf-header__logo"
+          >
+            <SfImage
+              src="/homepage/logo.png"
+              alt="Vue Storefront Next"
+              class="sf-header__logo-image"
+            />
+          </nuxt-link>
+        </template>
+        <template #navigation>
+          <!--  <SfHeaderNavigationItem class="nav-item" data-cy="app-header-url_women" label="WOMEN" :link="localePath('/c/women')"/>
+        <SfHeaderNavigationItem class="nav-item"  data-cy="app-header-url_men" label="MEN" :link="localePath('/c/men')" />-->
+        </template>
+        <template #aside>
+          <LocaleSelector class="smartphone-only" />
+        </template>
+        <template #header-icons>
+          <div class="sf-header__icons">
+            <SfButton
+              class="sf-button--pure sf-header__action"
+              @click="handleAccountClick"
+            >
+              <SfIcon :icon="accountIcon" size="1.25rem" />
+            </SfButton>
+            <SfButton
+              class="sf-button--pure sf-header__action"
+              @click="toggleWishlistSidebar"
+            >
+              <SfIcon class="sf-header__icon" icon="heart" size="1.25rem" />
+            </SfButton>
+            <SfButton
+              class="sf-button--pure sf-header__action"
+              @click="toggleCartSidebar"
+            >
+              <SfIcon
+                class="sf-header__icon"
+                icon="empty_cart"
+                size="1.25rem"
+              />
+              <SfBadge
+                v-if="cartTotalItems"
+                class="sf-badge--number cart-badge"
+                >{{ cartTotalItems }}</SfBadge
+              >
+            </SfButton>
+          </div>
+        </template>
+        <template #search>
+          <SfSearchBar
+            ref="searchBarRef"
+            :placeholder="$t('Search for items')"
+            aria-label="Search"
+            class="sf-header__search"
+            :value="term"
+            @input="handleSearch"
+            @keydown.enter="handleSearch($event)"
+            @focus="isSearchOpen = true"
+            @keydown.esc="closeSearch"
+            v-click-outside="closeSearch"
+          >
+            <template #icon>
+              <SfButton
+                v-if="!!term"
+                class="sf-search-bar__button sf-button--pure"
+                @click="closeOrFocusSearchBar"
+              >
+                <span class="sf-search-bar_ _icon">
+                  <SfIcon color="var(--c-text)" size="18px" icon="cross" />
+                </span>
+              </SfButton>
+              <SfButton
+                v-else
+                class="sf-search-bar__button sf-button--pure"
+                @click="
+                  isSearchOpen ? (isSearchOpen = false) : (isSearchOpen = true)
+                "
+              >
+                <span class="sf-search-bar__icon">
+                  <SfIcon color="var(--c-text)" size="20px" icon="search" />
+                </span>
+              </SfButton>
+            </template>
+          </SfSearchBar>
+        </template>
+      </SfHeader>
+      <div class="top_navigation">
+        <a
+          v-for="category in categoryList"
+          :href="'/c/' + category.slug"
+          :key="category.id"
+          >{{ category.name }}</a
+        >
+      </div>
+      <div class="category_navigation">
+        <a
+          :href="'/c/' + category.slug"
+          v-for="category in categoryList"
+          :key="category.id"
+          >{{ category.name }}</a
+        >
+      </div>
+      <SearchResults
+        :visible="isSearchOpen"
+        :result="result"
+        @close="closeSearch"
+      />
+      <SfOverlay :visible="isSearchOpen" />
+    </div>
   </div>
 </template>
 
@@ -194,6 +311,7 @@ import {
   SfBadge,
   SfSearchBar,
   SfOverlay,
+  SfHeader,
 } from "@storefront-ui/vue";
 import { useUiState } from "~/composables";
 import {
@@ -226,6 +344,7 @@ export default {
     SfSearchBar,
     SearchResults,
     SfOverlay,
+    SfHeader,
   },
   directives: { clickOutside },
   setup(props, { root }) {

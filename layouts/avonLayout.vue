@@ -168,6 +168,9 @@ h4 {
   border-bottom: none;
   font-size: 14px;
   font-family: var(--font-family);
+  &:focus {
+    outline: none;
+  }
 }
 .sf-search-bar__button {
   border-left: 1px solid #808080;
