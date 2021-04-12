@@ -2,7 +2,7 @@
   <div>
     <div class="avon-search">
       <div class="avon-search__header">
-        <h1>Search Result</h1>
+        <h1>Search Result Page</h1>
         <p
           class="total-count"
           v-if="didYouMean && Object.keys(didYouMean).length != 0"
