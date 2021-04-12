@@ -4,7 +4,7 @@
   "author": "Filip Rakowski",
   "version": "1.2.0-rc.3",
   "publishConfig": {
-    "access": "public"
+    "access": "public" 
   },
   "scripts": {
     "dev": "nuxt",
