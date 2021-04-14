@@ -45,6 +45,13 @@ export default {
   },
   loading: { color: '#fff' },
   router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'cart',
+        path: '/cart',
+        component: resolve(__dirname, 'pages/Cart.vue')
+      })
+    },
     middleware: ['checkout'],
     scrollBehavior(_to, _from, savedPosition) {
       if (savedPosition) {
