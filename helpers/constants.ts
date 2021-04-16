@@ -1,0 +1,5 @@
+export const baseOfferUrl = 'https://api.us-central1.gcp.commercetools.com/poc-avon-uk-dev/cart-discounts/'
+export const offerPageUrl = '?expand=custom.fields.buyList[*]&expand=custom.fields.getList[*]'
+export const authUrl = 'https://auth.us-central1.gcp.commercetools.com/oauth/token?grant_type=client_credentials&scope=manage_project:poc-avon-uk-dev'
+export const userName= 'wM0SahIsfYwn8gsqCyFnqBfN'
+export const password ='62B71c_2ljyXSQ5CmkL28vZm421p-Dfq'
