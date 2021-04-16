@@ -26,16 +26,52 @@
           :regular="regularprice"
         />
         <SfHeading :level="5" :title="$t('Inc. VAT')" class="cart_vat" />
-        <SfHeading
-          :level="6"
-          :title="$t('Excludes delivery')"
-          class="cart_delivery_price"
-        />
+        <div class="exclusive_delivery_div">
+          <SfHeading
+            :level="6"
+            :title="$t('Excludes delivery')"
+            class="cart_delivery_price"
+          />
+          <svg
+            viewBox="0 0 20 20"
+            width="15px"
+            class="cart_exclusive-delivery_icon"
+            id="Svg_info-current-invert"
+          >
+            <g
+              fill="var(--c-primary)"
+              fill-rule="evenodd"
+              transform="translate(1 1)"
+            >
+              <circle
+                cx="9"
+                cy="9"
+                r="9"
+                stroke="var(--c-primary)"
+                stroke-width="1.5"
+              ></circle>
+              <rect width="2" height="7" x="8" y="7" fill="#FFF" rx="1"></rect>
+              <circle cx="9" cy="5" r="1" fill="#FFF"></circle>
+            </g>
+          </svg>
+        </div>
       </div>
       <div class="cart_quantity">
-        <div class="qnty">
-          <p>{{ qty }}</p>
-        </div>
+        <SfInput
+          class="qnty smartphone-only"
+          v-model="qty"
+          label=""
+          name="Quantity"
+          type="number"
+          valid
+          @input="$emit('input', qty)"
+        />
+        <SfQuantitySelector
+          class="sf-quantity-selector--secondary desktop-only cart_quantity-selector"
+          v-model="qty"
+          aria-label="Quantity"
+          @input="$emit('input', qty)"
+        />
         <div class="cart_remove" @click="$emit('click:remove')">
           <!-- <SfIcon
             icon="cross"
@@ -51,7 +87,7 @@
       <div class="cart_subtotalprice desktop-only">
         <SfPrice
           class="sf-product-card__price productPrice"
-          :regular="regularprice"
+          :regular="totalProductPrice"
         />
       </div>
     </div>
@@ -68,7 +104,9 @@ import {
   SfInput,
   SfIcon,
   SfTable,
+  SfQuantitySelector,
 } from "@storefront-ui/vue";
+import { computed, ref } from "@vue/composition-api";
 export default {
   name: "CartProduct",
   components: {
@@ -79,8 +117,17 @@ export default {
     SfInput,
     SfTable,
     SfIcon,
+    SfQuantitySelector,
   },
-  props: ["title", "image", "regularprice", "specialprice", "qty", "link"],
+  props: [
+    "title",
+    "image",
+    "regularprice",
+    "specialprice",
+    "qty",
+    "link",
+    "totalProductPrice",
+  ],
   setup(props, context) {
     console.log("props1234", props, context);
     const onRemove = (e) => {
@@ -97,9 +144,13 @@ export default {
         return `${defaultClass} ${"shadeInactive"}`;
       }
     };
+    const productTotal = (quantity, price) => {
+      console.log("productTotal>>>>", quantity, price);
+      let totalPrice = quantity * price;
+      return totalPrice;
+    };
     return {
-      onRemove,
-      activeShadeClasses,
+      productTotal,
     };
   },
 };
@@ -109,7 +160,7 @@ export default {
   @include for-desktop {
     display: flex;
     grid-template-columns: 1fr 1fr;
-    grid-column-gap: 160px;
+    grid-column-gap: 115px;
   }
   @include for-mobile {
     display: grid;
@@ -127,7 +178,7 @@ export default {
       grid-row: 1;
     }
     @include for-desktop {
-      width: 290px;
+      width: 595px;
     }
   }
   .cart_itemprice {
@@ -138,14 +189,28 @@ export default {
     }
     @include for-desktop {
       margin-top: 10px;
+      width: 210px;
     }
     .cart_vat {
       text-align: left;
       margin-bottom: -15px;
     }
-    .cart_delivery_price {
-      @include for-desktop {
-        margin-top: 10px;
+    .exclusive_delivery_div {
+      display: flex;
+      .cart_delivery_price {
+        @include for-desktop {
+          margin-top: 10px;
+          text-align: left;
+        }
+      }
+      .cart_exclusive-delivery_icon {
+        margin-left: 5px;
+        @include for-desktop {
+          margin-top: 10px;
+        }
+        @include for-mobile {
+          margin-bottom: 5px;
+        }
       }
     }
   }
@@ -172,6 +237,9 @@ export default {
       font-weight: bolder;
       font-size: 15px;
       cursor: pointer;
+      @include for-desktop {
+        margin-left: 50px;
+      }
     }
   }
   .cart_subtotalprice {
