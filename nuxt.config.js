@@ -45,13 +45,6 @@ export default {
   },
   loading: { color: '#fff' },
   router: {
-    extendRoutes(routes, resolve) {
-      routes.push({
-        name: 'cart',
-        path: '/cart',
-        component: resolve(__dirname, 'pages/Cart.vue')
-      })
-    },
     middleware: ['checkout'],
     scrollBehavior(_to, _from, savedPosition) {
       if (savedPosition) {
@@ -65,8 +58,23 @@ export default {
         name: 'HomeWithRep',
         path: '/avon/:name',
         component: resolve(__dirname, 'pages/HomeWithRep.vue')
+      });
+      routes.push({
+        name: 'Offer',
+        path: '/Offer',
+        component: resolve(__dirname, 'pages/Offer.vue')
+      });
+      routes.push({
+        name: 'OfferDetail',
+        path: '/OfferDetail/:id',
+        component: resolve(__dirname, 'pages/OfferDetails.vue')
+      });
+      routes.push({
+        name: 'cart',
+        path: '/cart',
+        component: resolve(__dirname, 'pages/Cart.vue')
       })
-   }
+   },
   },
   buildModules: [
     // to core
