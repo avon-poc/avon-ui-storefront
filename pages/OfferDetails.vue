@@ -208,16 +208,18 @@ import ProductCard from "../components/ProductCard";
 
 export default {
   transition: "fade",
-  setup() {
+  setup(props,{root}) {
     const { offerDetails, getOfferDetail } = useCustomAPI();
     const data = computed(() => offerDetails.value);
     console.log("data", data);
+    const {id} = root.$route.params;
+    console.log('params',id)
  
     const products = {};
     // const products = computed(() => data && data.value && data.value.custom && data.value.custom.fields.buyList);
     // console.log("pdts", products);
     onMounted(async () => {
-     await getOfferDetail();
+     await getOfferDetail(id);
     });
     return { data, products,
     breadcrumbs: [
