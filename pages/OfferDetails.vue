@@ -17,12 +17,13 @@
         <LazyHydrate never class="desktop-only">
           <SfHeading
             :level="3"
-            :title="breadcrumbs ? breadcrumbs[breadcrumbs.length - 1].text : ''"
+            :title="data.name && data.name.en"
             class="navbar__title"
           />
+          
         </LazyHydrate>
 
-        
+       desc: {{data.description && data.description.en}}
       </div>
     </div>
 
@@ -35,64 +36,13 @@
             class="navbar__title categoryHeader"
           />
         </LazyHydrate>
-        <!-- <LazyHydrate when-idle>
-          
-            <SfAccordion :open="activeCategory" :show-chevron="true">
-              <SfAccordionItem
-                v-for="(cat, i) in categoryTree && categoryTree.items"
-                :key="i"
-                :header="cat.label"
-              >
-                <template>
-                  <SfList class="list">
-                    <SfListItem class="list__item">
-                      <SfMenuItem
-                        :count="cat.count || ''"
-                        :data-cy="`category-link_subcategory_${cat.slug}`"
-                        :label="cat.label"
-                      >
-                        <template #label>
-                          <nuxt-link
-                            :to="localePath(th.getCatLink(cat))"
-                            :class="
-                              cat.isCurrent ? 'sidebar--cat-selected' : ''
-                            "
-                          >
-                            All
-                          </nuxt-link>
-                        </template>
-                      </SfMenuItem>
-                    </SfListItem>
-                    <SfListItem
-                      class="list__item"
-                      v-for="(subCat, j) in cat.items"
-                      :key="j"
-                    >
-                      <SfMenuItem
-                        :count="subCat.count || ''"
-                        :data-cy="`category-link_subcategory_${subCat.slug}`"
-                        :label="subCat.label"
-                      >
-                        <template #label="{ label }">
-                          <nuxt-link
-                            :to="localePath(th.getCatLink(subCat))"
-                            :class="
-                              subCat.isCurrent ? 'sidebar--cat-selected' : ''
-                            "
-                          >
-                            {{ label }}
-                          </nuxt-link>
-                        </template>
-                      </SfMenuItem>
-                    </SfListItem>
-                  </SfList>
-                </template>
-              </SfAccordionItem>
-            </SfAccordion>
-        </LazyHydrate> -->
+        
         <div><hr class="sf-divider divider" /></div>
       </div>
-     
+        <div>
+          name: {{data.name && data.name.en}}
+          
+        </div>
         <div class="products" >
           <transition-group
             appear
@@ -102,38 +52,29 @@
           >
             <ProductCard
               data-cy="category-product-card"
-              v-for="(product, i) in products"
-              :key="productGetters.getSlug(product)"
+              v-for="(product, i) in products.value "
+              :key="i"
               :style="{ '--index': i }"
-              :title="productGetters.getName(product)"
-              :image="productGetters.getCoverImage(product)"
+              :title="product.obj && product.obj.masterData.current.name.en"
+              :image="getImage(product)"
               :regular-price="
-                $n(productGetters.getPrice(product).regular, 'currency')
+                $n(getPrice(product), 'currency')
               "
-              :special-price="
-                productGetters.getPrice(product).special &&
-                $n(productGetters.getPrice(product).special, 'currency')
-              "
-              v-model="qty"
-              :max-rating="5"
-              :score-rating="productGetters.getAverageRating(product)"
-              :show-add-to-cart-button="true"
               :isOnWishlist="false"
-              :isAddedToCart="isInCart({ product })"
-              :variant="getVariant(product)"
               :link="
                 localePath(
-                  `/p/${productGetters.getId(product)}/${productGetters.getSlug(
-                    product
-                  )}`
+                  `/p/}`
                 )
               "
+              :variant="{key: 'variant', value: 'variant'}"
               class="products__product-card"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
                 addItemToCart({ product, quantity: parseInt(qty) })
               "
-            />
+            >
+
+            </ProductCard>
           </transition-group>
           
          
@@ -190,7 +131,6 @@ import {
   SfMenuItem,
   SfFilter,
   SfProductCard,
-  SfProductCardHorizontal,
   SfPagination,
   SfAccordion,
   SfSelect,
@@ -213,13 +153,28 @@ export default {
     const data = computed(() => offerDetails.value);
     console.log("data", data);
  
-    const products = {};
-    // const products = computed(() => data && data.value && data.value.custom && data.value.custom.fields.buyList);
-    // console.log("pdts", products);
+    const products = ref({});
+    
     onMounted(async () => {
      await getOfferDetail();
+      products.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.buyList);
+     console.log("pdts", products);
     });
+
+    const getPrice = (product) => {
+      var variant = product.obj.masterData.current.masterVariant.prices.find((obj) => {
+        return obj.name === "variantType";
+      });
+      console.log("prices>>>>>>>>", product.obj.masterData.current.masterVariant.prices);
+      return "44";
+    };
+    const getImage = (product) => {
+      var imgUrl = product.obj.masterData.current.masterVariant.images[0].url
+      return imgUrl;
+    };
     return { data, products,
+    getPrice,
+    getImage,
     breadcrumbs: [
         {
           text: 'Home',
