@@ -79,7 +79,7 @@
               ></ellipse>
             </svg>
           </div>
-          <div class="cart-bag">
+          <div class="cart-bag" @click="routeCart">
             <svg viewBox="0 0 21 21" id="Svg_bag">
               <path
                 fill="currentColor"
@@ -143,7 +143,7 @@
                 class="whiteFill"
               ></path>
             </svg>
-            <span class="cart-count">3</span>
+            <span class="cart-count" v-if="cartTotalItems">{{ cartTotalItems }}</span>
           </div>
         </div>
       </div>
@@ -224,7 +224,7 @@
             </SfButton>
             <SfButton
               class="sf-button--pure sf-header__action"
-              @click="toggleCartSidebar"
+              @click="routeCart"
             >
               <SfIcon
                 class="sf-header__icon"
@@ -377,6 +377,10 @@ export default {
       };
     });
 
+     const routeCart = () => {
+      return root.$router.push(`/cart`);
+    };
+
     const categoryList = computed(() => {
       return cat1.value.filter((cat) => {
         return cat.parent === null;
@@ -483,6 +487,7 @@ export default {
       searchBarRef,
       isMobile,
       categoryList,
+      routeCart
     };
   },
 };
