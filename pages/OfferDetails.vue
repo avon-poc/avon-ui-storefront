@@ -15,15 +15,19 @@
       <div class="navbar__main">
         
         <LazyHydrate never class="desktop-only">
+          <div>
           <SfHeading
-            :level="3"
+            :level="2"
             :title="data.name && data.name.en"
             class="navbar__title"
           />
-          
+          <SfHeading
+            :level="3"
+            :title="data.description && data.description.en"
+            class="navbar__title"
+          />
+          </div>
         </LazyHydrate>
-
-       desc: {{data.description && data.description.en}}
       </div>
     </div>
 
@@ -39,10 +43,6 @@
         
         <div><hr class="sf-divider divider" /></div>
       </div>
-        <div>
-          name: {{data.name && data.name.en}}
-          
-        </div>
         <div class="products" >
           <transition-group
             appear
