@@ -44,31 +44,42 @@
         <div><hr class="sf-divider divider" /></div>
       </div>
         <div class="products" >
+          <p
+            v-if="getListProducts && getListProducts.value && Object.keys(getListProducts.value).length > 0"
+          >
+            Buy List
+            
+          </p>
           <transition-group
             appear
             name="products__slide"
             tag="div"
             class="products__grid"
-          >
+          >     
+          
             <ProductCard
               data-cy="category-product-card"
-              v-for="(product, i) in products.value "
+              v-for="(product, i) in buyListProducts.value "
               :key="i"
               :style="{ '--index': i }"
               :title="product.obj && product.obj.masterData.current.name.en"
               :image="getImage(product)"
               :regular-price="
-                $n(getPrice(product), 'currency')
+                $n(getPrice(product).price, 'currency')
+              "
+              :special-price="
+              getPrice(product).specialPrice &&
+                $n(getPrice(product).specialPrice, 'currency')
               "
               :isOnWishlist="false"
               :link="
                 localePath(
-                  `/p/}`
+                  `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
                 )
               "
-              :variant="{key: 'variant', value: 'variant'}"
+              v-model="qty"
+              :variant="getVariant(product)"
               class="products__product-card"
-              @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
                 addItemToCart({ product, quantity: parseInt(qty) })
               "
@@ -76,7 +87,49 @@
 
             </ProductCard>
           </transition-group>
+           <p
+            v-if="getListProducts && getListProducts.value && Object.keys(getListProducts.value).length > 0"
+          >
+            Get List
+            
+          </p>
+          <transition-group
+            appear
+            name="products__slide"
+            tag="div"
+            class="products__grid"
+          >     
           
+            <ProductCard
+              data-cy="category-product-card"
+              v-for="(product, i) in getListProducts.value "
+              :key="i"
+              :style="{ '--index': i }"
+              :title="product.obj && product.obj.masterData.current.name.en"
+              :image="getImage(product)"
+              :regular-price="
+                $n(getPrice(product).price, 'currency')
+              "
+              :special-price="
+              getPrice(product).specialPrice &&
+                $n(getPrice(product).specialPrice, 'currency')
+              "
+              :isOnWishlist="false"
+              :link="
+                localePath(
+                  `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+                )
+              "
+              v-model="qty"
+              :variant="getVariant(product)"
+              class="products__product-card"
+              @click:add-to-cart="
+                addItemToCart({ product, quantity: parseInt(qty) })
+              "
+            >
+
+            </ProductCard>
+          </transition-group>
          
 
          
@@ -140,6 +193,9 @@ import {
   SfProperty,
   SfImage,
 } from "@storefront-ui/vue";
+import {
+  useCart
+} from "@vue-storefront/commercetools";
 import { ref, computed, onMounted } from "@vue/composition-api";
 import { onSSR } from "@vue-storefront/core";
 import useCustomAPI from "../composables/useCustomAPI";
@@ -149,34 +205,56 @@ import ProductCard from "../components/ProductCard";
 export default {
   transition: "fade",
   setup(props,{root}) {
+    const { addItem: addItemToCart, isInCart } = useCart();
     const { offerDetails, getOfferDetail } = useCustomAPI();
     const data = computed(() => offerDetails.value);
     console.log("data", data);
     const {id} = root.$route.params;
     console.log('params',id)
  
-    const products = ref({});
-    
+    const buyListProducts = ref({});
+    const getListProducts = ref({});
+    const qty = ref(1);
     onMounted(async () => {
      await getOfferDetail(id);
-      products.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.buyList);
-     console.log("pdts", products);
+      buyListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.buyList);
+       getListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.getList);
+     console.log("buyListProducts", buyListProducts);
+     console.log("getListProducts", getListProducts );
     });
 
     const getPrice = (product) => {
-      var variant = product.obj.masterData.current.masterVariant.prices.find((obj) => {
+      const priceObj = product.obj.masterData.current.masterVariant.prices[0];
+      var price = priceObj.value.centAmount/(Math.pow (10,2));
+      var specialPrice = priceObj.discounted && priceObj.discounted.value.centAmount/(Math.pow (10,2));;
+      var obj = {price:price};
+      specialPrice > 0 ? obj.specialPrice = specialPrice: '';
+      return obj;
+    };
+    const getVariant = (product) => {
+      var variant ={};
+       variant = product?.obj?.masterData?.current?.variants[0]?.attributes.find((obj) => {
         return obj.name === "variantType";
       });
-      console.log("prices>>>>>>>>", product.obj.masterData.current.masterVariant.prices);
-      return "44";
+      return variant ? variant.value : "";
     };
     const getImage = (product) => {
       var imgUrl = product.obj.masterData.current.masterVariant.images[0].url
       return imgUrl;
     };
-    return { data, products,
+    const getQuantity = () => {
+      return qty;
+    };
+    return {
+    data,
+    buyListProducts,
+    qty,
     getPrice,
     getImage,
+    getVariant,
+    getListProducts,
+    addItemToCart,
+    isInCart,
     breadcrumbs: [
         {
           text: 'Home',
