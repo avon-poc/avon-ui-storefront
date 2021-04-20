@@ -128,13 +128,12 @@
         </div> -->
 
         <div class="navbar__view desktop-only">
-          <span class="navbar__view-label desktop-only">{{ $t("View") }}</span>
           <SfIcon
             data-cy="category-icon_grid-view"
             class="navbar__view-icon"
-            :color="isCategoryGridView ? 'black' : 'dark-secondary'"
+            :color="isCategoryGridView ? '#dfc5f3' : 'dark-secondary'"
             icon="tiles"
-            size="12px"
+            size="20px"
             role="button"
             aria-label="Change to grid view"
             :aria-pressed="isCategoryGridView"
@@ -143,9 +142,9 @@
           <SfIcon
             data-cy="category-icon_list-view"
             class="navbar__view-icon"
-            :color="!isCategoryGridView ? 'black' : 'dark-secondary'"
+            :color="!isCategoryGridView ? 'dark-secondary' : '#dfc5f3'"
             icon="list"
-            size="12px"
+            size="20px"
             role="button"
             aria-label="Change to list view"
             :aria-pressed="!isCategoryGridView"
@@ -225,7 +224,7 @@
       <SfLoader :class="{ loading }" :loading="loading">
         <div class="products" v-if="!loading">
           <transition-group
-            v-if="!isCategoryGridView"
+            v-if="isCategoryGridView"
             appear
             name="products__slide"
             tag="div"
@@ -259,6 +258,7 @@
                   )}`
                 )
               "
+              :product="product"
               class="products__product-card"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="
@@ -362,42 +362,8 @@
               </SfSelect>
             </LazyHydrate>
           </div>
-          <div class="common-rep-block">
-            <SfHeading
-              class="heading-offer"
-              :title="$t('Get Exclusive Special Offers & The Latest News')"
-            />
-            <SfLink class="sf-product-card__link subscribePDP"
-              >SUBSCRIBE / SIGN UP >
-            </SfLink>
-            <div class="smartphone-only">
-              <SfButton
-                class="sf-add-to-cart__button atbbtnPDP repButton"
-                :disabled="loading"
-                @click="
-                  addItem({
-                    product,
-                    quantity: parseInt(qty),
-                    repId: 'rep01',
-                  })
-                "
-              >
-                Find a Representative
-              </SfButton>
-              <SfButton
-                class="sf-add-to-cart__button atbbtnPDP repButton"
-                :disabled="loading"
-                @click="
-                  addItem({
-                    product,
-                    quantity: parseInt(qty),
-                    repId: 'rep01',
-                  })
-                "
-              >
-                Become a Representative
-              </SfButton>
-            </div>
+          <div class="common-rep-block smartphone-only">
+            <BottomRepBlock />
           </div>
         </div>
       </SfLoader>
@@ -518,6 +484,11 @@ import LazyHydrate from "vue-lazy-hydration";
 import Vue from "vue";
 import ProductCard from "../components/ProductCard";
 import ProductCardHorizontal from "../components/ProductCardHorizontal";
+import BottomRepBlock from "../components/BottomRepBlock";
+import {
+  mapMobileObserver,
+  unMapMobileObserver,
+} from "@storefront-ui/vue/src/utilities/mobile-observer.js";
 
 // TODO(addToCart qty, horizontal): https://github.com/vuestorefront/storefront-ui/issues/1606
 export default {
@@ -540,6 +511,8 @@ export default {
     const facets = computed(() =>
       facetGetters.getGrouped(result.value, ["color", "size"])
     );
+    const isMobile = computed(() => mapMobileObserver().isMobile.get());
+
     //test code commit
     const pagination = computed(() => facetGetters.getPagination(result.value));
     const activeCategory = computed(() => {
@@ -562,10 +535,14 @@ export default {
       console.log("products>>>>>>>>>>>>", products.value[0]);
       console.log("breadcrumbs>>>>>>>>>>>> ", breadcrumbs.value[1].text);
       console.log("sortBy>>>>>>>>>>>>", th.getFacetsFromURL());
+      // console.log("isCategoryGridView>>>>>>>>>>>>", isCategoryGridView.value);
     });
 
     const { changeFilters, isFacetColor } = useUiHelpers();
-    const { toggleFilterSidebar } = useUiState();
+    const {
+      toggleFilterSidebar,
+      toggleCategoryGridView,
+    } = useUiState();
     const selectedFilters = ref({});
     const qty = ref(1);
     onMounted(() => {
@@ -617,10 +594,6 @@ export default {
       return variant ? variant.value : "";
     };
 
-    const getQuantity = () => {
-      return qty;
-    };
-
     return {
       ...uiState,
       th,
@@ -644,7 +617,8 @@ export default {
       applyFilters,
       qty,
       getVariant,
-      getQuantity,
+      toggleCategoryGridView,
+      isMobile,
     };
   },
   components: {
@@ -668,6 +642,7 @@ export default {
     ProductCard,
     ProductCardHorizontal,
     SfImage,
+    BottomRepBlock,
   },
 };
 </script>
@@ -699,6 +674,10 @@ export default {
     max-width: 1240px;
     margin: 0 auto;
   }
+}
+
+.navbar__main{
+  justify-content: flex-start !important
 }
 .main {
   &.section {
@@ -796,7 +775,9 @@ export default {
     --select-option-font-size: var(--font-size-sm);
     --select-error-message-height: 0;
     ::v-deep .sf-select__dropdown {
-      width: 280px;
+      @include for-mobile {
+        width: 280px;
+      }
       background: var(--c-background-two);
       font-family: var(--font-family);
       font-weight: var(--font-weight--light);
@@ -810,7 +791,9 @@ export default {
   &__sort {
     display: flex;
     align-items: center;
-    margin: 0 auto 0 var(--spacer-2xl);
+    @include for-mobile {
+      margin: 0 auto 0 var(--spacer-2xl);
+    }
   }
   &__counter {
     font-family: var(--font-family--secondary);
@@ -1040,8 +1023,11 @@ export default {
   margin-right: -26px;
 }
 .navbar__sort {
-  margin-left: 0 !important;
-  width: 90%;
+  @include for-mobile {
+    width: 90%;
+    margin-left: 0 !important;
+  }
+  // margin-left: 400px !important;
   border: 1px solid #cccccc;
   background: var(--c-background-two);
 }
