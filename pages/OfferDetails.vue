@@ -1,6 +1,6 @@
 <template>
-<div id="offerDetails">
-  <div class="navbar section dividerColor">
+  <div id="offerDetails">
+    <div class="navbar section dividerColor">
       <div class="navbar__aside desktop-only">
         <LazyHydrate never>
           <SfHeading
@@ -12,19 +12,18 @@
       </div>
 
       <div class="navbar__main">
-        
         <LazyHydrate never class="desktop-only">
           <div>
-          <SfHeading
-            :level="2"
-            :title="data.name && data.name.en"
-            class="navbar__title"
-          />
-          <SfHeading
-            :level="3"
-            :title="data.description && data.description.en"
-            class="navbar__title"
-          />
+            <SfHeading
+              :level="2"
+              :title="data.name && data.name.en"
+              class="navbar__title"
+            />
+            <SfHeading
+              :level="3"
+              :title="data.description && data.description.en"
+              class="navbar__title"
+            />
           </div>
         </LazyHydrate>
       </div>
@@ -39,135 +38,128 @@
             class="navbar__title categoryHeader"
           />
         </LazyHydrate>
-        
+
         <div><hr class="sf-divider divider" /></div>
       </div>
-        <div class="products" >
-          <p
-            v-if="getListProducts && getListProducts.value && Object.keys(getListProducts.value).length > 0"
-          >
-            Buy List
-            
-          </p>
-          <transition-group
-            appear
-            name="products__slide"
-            tag="div"
-            class="products__grid"
-          >     
-          
-            <ProductCard
-              data-cy="category-product-card"
-              v-for="(product, i) in buyListProducts.value "
-              :key="i"
-              :style="{ '--index': i }"
-              :title="product.obj && product.obj.masterData.current.name.en"
-              :image="getImage(product)"
-              :regular-price="
-                $n(getPrice(product).price, 'currency')
-              "
-              :special-price="
+      <div class="products">
+        <p
+          v-if="
+            getListProducts &&
+            getListProducts.value &&
+            Object.keys(getListProducts.value).length > 0
+          "
+        >
+          Buy List
+        </p>
+        <transition-group
+          appear
+          name="products__slide"
+          tag="div"
+          class="products__grid"
+        >
+          <ProductCard
+            data-cy="category-product-card"
+            v-for="(product, i) in buyListProducts.value"
+            :key="i"
+            :style="{ '--index': i }"
+            :title="product.obj && product.obj.masterData.current.name.en"
+            :image="getImage(product)"
+            :regular-price="$n(getPrice(product).price, 'currency')"
+            :special-price="
               getPrice(product).specialPrice &&
-                $n(getPrice(product).specialPrice, 'currency')
-              "
-              :isOnWishlist="false"
-              :link="
-                localePath(
-                  `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
-                )
-              "
-              v-model="qty"
-              :variant="getVariant(product)"
-              class="products__product-card"
-              @click:add-to-cart="
-                addItemToCart1({ product, quantity: parseInt(qty) })
+              $n(getPrice(product).specialPrice, 'currency')
+            "
+            :isOnWishlist="false"
+            :link="
+              localePath(
+                `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+              )
+            "
+            v-model="qty"
+            :variant="getVariant(product)"
+            class="products__product-card"
+            @click:add-to-cart="addItemToCart1(product, qty)"
+          >
+          </ProductCard>
+        </transition-group>
+        <p
+          v-if="
+            getListProducts &&
+            getListProducts.value &&
+            Object.keys(getListProducts.value).length > 0
+          "
+        >
+          Get List
+        </p>
+        <transition-group
+          appear
+          name="products__slide"
+          tag="div"
+          class="products__grid"
+        >
+          <ProductCard
+            data-cy="category-product-card"
+            v-for="(product, i) in getListProducts.value"
+            :key="i"
+            :style="{ '--index': i }"
+            :title="product.obj && product.obj.masterData.current.name.en"
+            :image="getImage(product)"
+            :regular-price="$n(getPrice(product).price, 'currency')"
+            :special-price="
+              getPrice(product).specialPrice &&
+              $n(getPrice(product).specialPrice, 'currency')
+            "
+            :isOnWishlist="false"
+            :link="
+              localePath(
+                `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+              )
+            "
+            v-model="qty"
+            :variant="{ key: 'NoBtn' }"
+            class="products__product-card"
+          >
+          </ProductCard>
+        </transition-group>
+
+        <div class="common-rep-block">
+          <SfHeading
+            class="heading-offer"
+            :title="$t('Get Exclusive Special Offers & The Latest News')"
+          />
+          <SfLink class="sf-product-card__link subscribePDP"
+            >SUBSCRIBE / SIGN UP >
+          </SfLink>
+          <div class="smartphone-only">
+            <SfButton
+              class="sf-add-to-cart__button atbbtnPDP repButton"
+              @click="
+                addItem({
+                  product,
+                  quantity: parseInt(qty),
+                  repId: 'rep01',
+                })
               "
             >
-
-            </ProductCard>
-          </transition-group>
-           <p
-            v-if="getListProducts && getListProducts.value && Object.keys(getListProducts.value).length > 0"
-          >
-            Get List
-            
-          </p>
-          <transition-group
-            appear
-            name="products__slide"
-            tag="div"
-            class="products__grid"
-          >     
-          
-            <ProductCard
-              data-cy="category-product-card"
-              v-for="(product, i) in getListProducts.value "
-              :key="i"
-              :style="{ '--index': i }"
-              :title="product.obj && product.obj.masterData.current.name.en"
-              :image="getImage(product)"
-              :regular-price="
-                $n(getPrice(product).price, 'currency')
+              Find a Representative
+            </SfButton>
+            <SfButton
+              class="sf-add-to-cart__button atbbtnPDP repButton"
+              @click="
+                addItem({
+                  product,
+                  quantity: parseInt(qty),
+                  repId: 'rep01',
+                })
               "
-              :special-price="
-              getPrice(product).specialPrice &&
-                $n(getPrice(product).specialPrice, 'currency')
-              "
-              :isOnWishlist="false"
-              :link="
-                localePath(
-                  `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
-                )
-              "
-              v-model="qty"
-              :variant="{'key':'NoBtn'}"
-              class="products__product-card"
             >
-
-            </ProductCard>
-          </transition-group>
-         
-
-         
-          <div class="common-rep-block">
-            <SfHeading
-              class="heading-offer"
-              :title="$t('Get Exclusive Special Offers & The Latest News')"
-            />
-            <SfLink class="sf-product-card__link subscribePDP"
-              >SUBSCRIBE / SIGN UP >
-            </SfLink>
-            <div class="smartphone-only">
-              <SfButton
-                class="sf-add-to-cart__button atbbtnPDP repButton"
-                              @click="
-                  addItem({
-                    product,
-                    quantity: parseInt(qty),
-                    repId: 'rep01',
-                  })
-                "
-              >
-                Find a Representative
-              </SfButton>
-              <SfButton
-                class="sf-add-to-cart__button atbbtnPDP repButton"
-               
-                @click="
-                  addItem({
-                    product,
-                    quantity: parseInt(qty),
-                    repId: 'rep01',
-                  })
-                "
-              >
-                Become a Representative
-              </SfButton>
-            </div>
+              Become a Representative
+            </SfButton>
           </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import {
@@ -191,7 +183,8 @@ import {
 } from "@storefront-ui/vue";
 import {
   useCart,
-  useProduct
+  useProduct,
+  productGetters,
 } from "@vue-storefront/commercetools";
 import { ref, computed, onMounted } from "@vue/composition-api";
 import useCustomAPI from "../composables/useCustomAPI";
@@ -200,78 +193,99 @@ import ProductCard from "../components/ProductCard";
 
 export default {
   transition: "fade",
-  setup(props,{root}) {
+  setup(props, { root }) {
     const { addItem: addItemToCart, isInCart } = useCart();
     const { offerDetails, getOfferDetail } = useCustomAPI();
     const data = computed(() => offerDetails.value);
     console.log("data", data);
-    const {id} = root.$route.params;
-    console.log('params',id)
- 
+    const { id } = root.$route.params;
+    console.log("params", id);
+
     const buyListProducts = ref({});
     const getListProducts = ref({});
     const qty = ref(1);
     const { products, search } = useProduct("offerProduct");
     onMounted(async () => {
-     await getOfferDetail(id);
-      buyListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.buyList);
-      getListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.getList);
+      await getOfferDetail(id);
+      buyListProducts.value = computed(
+        () =>
+          data &&
+          data.value &&
+          data.value.custom &&
+          data.value.custom.fields &&
+          data.value.custom.fields.buyList
+      );
+      getListProducts.value = computed(
+        () =>
+          data &&
+          data.value &&
+          data.value.custom &&
+          data.value.custom.fields &&
+          data.value.custom.fields.getList
+      );
     });
-    const addItemToCart1 = (product) => {
-          search({ id: product.obj.id});
-          event.preventDefault();
-          this.isAddingToCart = true;
-          setTimeout(() => {
-            this.isAddingToCart = false;
-          }, 1000);
-          this.$emit("click:add-to-cart");
+    const product = computed(
+      () =>
+        productGetters.getFiltered(products.value, {
+          master: true,
+          attributes: root.$route.query,
+        })[0]
+    );
+    const addItemToCart1 = async (productdet, qty) => {
+      await search({ id: productdet.obj.id });
+      console.log("product addItemToCart1>>>>>>>>>>>>", product.value);
+      addItemToCart({ product:product.value, quantity: parseInt(qty) });
+    };
 
-    }
-  
     const getPrice = (product) => {
       const priceObj = product.obj.masterData.current.masterVariant.prices[0];
-      var price = priceObj.value.centAmount/(Math.pow (10,2));
-      var specialPrice = priceObj.discounted && priceObj.discounted.value.centAmount/(Math.pow (10,2));;
-      var obj = {price:price};
-      specialPrice > 0 ? obj.specialPrice = specialPrice: '';
+      var price = priceObj.value.centAmount / Math.pow(10, 2);
+      var specialPrice =
+        priceObj.discounted &&
+        priceObj.discounted.value.centAmount / Math.pow(10, 2);
+      var obj = { price: price };
+      specialPrice > 0 ? (obj.specialPrice = specialPrice) : "";
       return obj;
     };
     const getVariant = (product) => {
-      var variant ={};
-       variant = product?.obj?.masterData?.current?.variants[0]?.attributes.find((obj) => {
-        return obj.name === "variantType";
-      });
+      var variant = {};
+      variant = product?.obj?.masterData?.current?.variants[0]?.attributes.find(
+        (obj) => {
+          return obj.name === "variantType";
+        }
+      );
       return variant ? variant.value : "";
     };
     const getImage = (product) => {
-      var imgUrl = product.obj.masterData.current.masterVariant.images[0].url
+      var imgUrl = product.obj.masterData.current.masterVariant.images[0].url;
       return imgUrl;
     };
     return {
-    data,
-    buyListProducts,
-    qty,
-    getPrice,
-    getImage,
-    getVariant,
-    getListProducts,
-    addItemToCart,
-    addItemToCart1,
-    isInCart,
-    breadcrumbs: [
+      data,
+      buyListProducts,
+      qty,
+      getPrice,
+      getImage,
+      getVariant,
+      getListProducts,
+      addItemToCart,
+      addItemToCart1,
+      isInCart,
+      breadcrumbs: [
         {
-          text: 'Home',
+          text: "Home",
           route: {
-            link: '#'
-          }
+            link: "#",
+          },
         },
         {
-          text: 'Offers',
+          text: "Offers",
           route: {
-            link: '#'
-          }
-        }
-      ] };
+            link: "#",
+          },
+        },
+      ],
+    };
   },
   components: {
     SfLink,
