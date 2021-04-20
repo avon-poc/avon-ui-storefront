@@ -17,12 +17,12 @@
           <div>
           <SfHeading
             :level="2"
-            :title="data.name && data.name.en"
+            :title="data.name && data.name[locale]"
             class="navbar__title"
           />
           <SfHeading
             :level="3"
-            :title="data.description && data.description.en"
+            :title="data.description && data.description[locale]"
             class="navbar__title"
           />
           </div>
@@ -61,7 +61,7 @@
               v-for="(product, i) in buyListProducts.value "
               :key="i"
               :style="{ '--index': i }"
-              :title="product.obj && product.obj.masterData.current.name.en"
+              :title="product.obj && product.obj.masterData.current.name[locale]"
               :image="getImage(product)"
               :regular-price="
                 $n(getPrice(product).price, 'currency')
@@ -73,14 +73,14 @@
               :isOnWishlist="false"
               :link="
                 localePath(
-                  `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+                  `/p/${product.obj.id}/${product.obj.masterData.current.slug[locale]}`
                 )
               "
               v-model="qty"
               :variant="getVariant(product)"
               class="products__product-card"
               @click:add-to-cart="
-                addItemToCart1({ product, quantity: parseInt(qty) })
+                addItemToCart({ product, quantity: parseInt(qty) })
               "
             >
 
@@ -89,7 +89,7 @@
            <p
             v-if="getListProducts && getListProducts.value && Object.keys(getListProducts.value).length > 0"
           >
-            Get List
+            Get List 
             
           </p>
           <transition-group
@@ -104,7 +104,7 @@
               v-for="(product, i) in getListProducts.value "
               :key="i"
               :style="{ '--index': i }"
-              :title="product.obj && product.obj.masterData.current.name.en"
+              :title="product.obj && product.obj.masterData.current.name[locale]"
               :image="getImage(product)"
               :regular-price="
                 $n(getPrice(product).price, 'currency')
@@ -116,7 +116,7 @@
               :isOnWishlist="false"
               :link="
                 localePath(
-                  `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+                  `/p/${product.obj.id}/${product.obj.masterData.current.slug[locale]}`
                 )
               "
               v-model="qty"
@@ -197,6 +197,8 @@ import { ref, computed, onMounted } from "@vue/composition-api";
 import useCustomAPI from "../composables/useCustomAPI";
 import LazyHydrate from "vue-lazy-hydration";
 import ProductCard from "../components/ProductCard";
+import { useVSFContext } from '@vue-storefront/core';
+
 
 export default {
   transition: "fade",
@@ -212,22 +214,14 @@ export default {
     const getListProducts = ref({});
     const qty = ref(1);
     const { products, search } = useProduct("offerProduct");
+    const { $ct: { config } } = useVSFContext();
+
     onMounted(async () => {
      await getOfferDetail(id);
       buyListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.buyList);
       getListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.getList);
     });
-    const addItemToCart1 = (product) => {
-          search({ id: product.obj.id});
-          event.preventDefault();
-          this.isAddingToCart = true;
-          setTimeout(() => {
-            this.isAddingToCart = false;
-          }, 1000);
-          this.$emit("click:add-to-cart");
-
-    }
-  
+      
     const getPrice = (product) => {
       const priceObj = product.obj.masterData.current.masterVariant.prices[0];
       var price = priceObj.value.centAmount/(Math.pow (10,2));
@@ -256,8 +250,8 @@ export default {
     getVariant,
     getListProducts,
     addItemToCart,
-    addItemToCart1,
     isInCart,
+    locale: config.locale,
     breadcrumbs: [
         {
           text: 'Home',
