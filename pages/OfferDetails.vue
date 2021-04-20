@@ -1,6 +1,5 @@
 <template>
 <div id="offerDetails">
-  <!-- <div>Offer Details Page {{ data }}</div> -->
   <div class="navbar section dividerColor">
       <div class="navbar__aside desktop-only">
         <LazyHydrate never>
@@ -81,7 +80,7 @@
               :variant="getVariant(product)"
               class="products__product-card"
               @click:add-to-cart="
-                addItemToCart({ product, quantity: parseInt(qty) })
+                addItemToCart1({ product, quantity: parseInt(qty) })
               "
             >
 
@@ -121,11 +120,8 @@
                 )
               "
               v-model="qty"
-              :variant="getVariant(product)"
+              :variant="{'key':'NoBtn'}"
               class="products__product-card"
-              @click:add-to-cart="
-                addItemToCart({ product, quantity: parseInt(qty) })
-              "
             >
 
             </ProductCard>
@@ -194,10 +190,10 @@ import {
   SfImage,
 } from "@storefront-ui/vue";
 import {
-  useCart
+  useCart,
+  useProduct
 } from "@vue-storefront/commercetools";
 import { ref, computed, onMounted } from "@vue/composition-api";
-import { onSSR } from "@vue-storefront/core";
 import useCustomAPI from "../composables/useCustomAPI";
 import LazyHydrate from "vue-lazy-hydration";
 import ProductCard from "../components/ProductCard";
@@ -215,14 +211,23 @@ export default {
     const buyListProducts = ref({});
     const getListProducts = ref({});
     const qty = ref(1);
+    const { products, search } = useProduct("offerProduct");
     onMounted(async () => {
      await getOfferDetail(id);
       buyListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.buyList);
-       getListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.getList);
-     console.log("buyListProducts", buyListProducts);
-     console.log("getListProducts", getListProducts );
+      getListProducts.value = computed(() => data && data.value && data.value.custom && data.value.custom.fields && data.value.custom.fields.getList);
     });
+    const addItemToCart1 = (product) => {
+          search({ id: product.obj.id});
+          event.preventDefault();
+          this.isAddingToCart = true;
+          setTimeout(() => {
+            this.isAddingToCart = false;
+          }, 1000);
+          this.$emit("click:add-to-cart");
 
+    }
+  
     const getPrice = (product) => {
       const priceObj = product.obj.masterData.current.masterVariant.prices[0];
       var price = priceObj.value.centAmount/(Math.pow (10,2));
@@ -242,9 +247,6 @@ export default {
       var imgUrl = product.obj.masterData.current.masterVariant.images[0].url
       return imgUrl;
     };
-    const getQuantity = () => {
-      return qty;
-    };
     return {
     data,
     buyListProducts,
@@ -254,6 +256,7 @@ export default {
     getVariant,
     getListProducts,
     addItemToCart,
+    addItemToCart1,
     isInCart,
     breadcrumbs: [
         {

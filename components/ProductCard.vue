@@ -114,6 +114,7 @@
               View Product
             </SfButton>
           </div>
+          <div v-else-if="variant.key === 'NoBtn'" appear tag="div"/>
           <div v-else>
             <SfButton :key="Date.now()" class="atbbtn" @click="onAddToCart">
               Add to Bag
