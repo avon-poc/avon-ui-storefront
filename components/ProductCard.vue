@@ -115,7 +115,7 @@
             </SfButton>
           </div>
           <div v-else>
-            <SfButton :key="Date.now()" class="atbbtn" @click="onAddToCart">
+            <SfButton :key="Date.now()" class="atbbtn" @click="(e)=>{onAddToCart(e,product)}">
               Add to Bag
             </SfButton>
           </div>
@@ -303,6 +303,11 @@ export default {
       type: [String, Object],
       default: "",
     },
+
+    product: {
+      type: [Array, Object, String],
+      default: "",
+    },
   },
   data() {
     return {
@@ -334,7 +339,14 @@ export default {
     toggleIsOnWishlist() {
       this.$emit("click:wishlist", !this.isOnWishlist);
     },
-    onAddToCart(event) {
+    onAddToCart(event,product) {
+      console.log("onAddToCart>>>>>>>>>>>>", product);
+      var apiApptus = window.esalesAPI({
+        market: "UK",
+        clusterId: "wFE4AE5CF",
+      });
+      apiApptus.notify.nonEsalesClick({ productKey:"1137_UK"});
+      // apiApptus.notify.addToCart("Oy9keW5hbWljLXBhZ2VzL3N0YXJ0L2VzYWxlcy1zdGFydC0xOyM7cHJvZHVjdF9rZXk7UF8xMjUzODMtMDAxNF9VSzsjOztOT05FOk5PTkU7NjE7");
       event.preventDefault();
       this.isAddingToCart = true;
       setTimeout(() => {
