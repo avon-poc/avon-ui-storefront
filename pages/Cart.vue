@@ -46,9 +46,9 @@
           "
           :totalProductPrice="
             $n(
-              cartGetters.getItemPrice(product).special
+             ( cartGetters.getItemPrice(product).special
                 ? cartGetters.getItemPrice(product).special
-                : cartGetters.getItemPrice(product).regular *
+                : cartGetters.getItemPrice(product).regular) *
                     cartGetters.getItemQty(product),
               'currency'
             )
