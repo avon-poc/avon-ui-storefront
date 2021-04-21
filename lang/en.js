@@ -141,5 +141,7 @@ export default {
   'We accept':'We accept',
   'SUBTOTAL':'SUBTOTAL',
   "You do not have any items in your bag":"You do not have any items in your bag",
-  "Shopping bag empty":"Shopping bag empty"
+  "Shopping bag empty":"Shopping bag empty",
+  "Continue Shopping arrow":"◃ Continue Shopping",
+  "Continue Shopping":"Continue Shopping"
 };
