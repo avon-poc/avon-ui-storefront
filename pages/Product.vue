@@ -13,7 +13,7 @@
           class="sf-heading--no-underline sf-heading--left"
         />
       </div>
-      <div class="RatingAndShare smartphone-only">
+      <div class="RatingAndShare">
         <div class="product__rating contentPadding">
           <SfRating :score="averageRating" :max="5" />
           <a v-if="!!totalReviews" href="#" class="product__count">
@@ -682,7 +682,6 @@ export default {
     @include for-desktop {
       max-width: 32.625rem;
       margin: 0 0 0 7.5rem;
-      margin-top: 50px;
     }
   }
   &__header {
@@ -695,7 +694,7 @@ export default {
     @include for-desktop {
       --heading-title-font-weight: var(--font-weight--semibold);
       margin: 0 auto;
-      float: right;
+      justify-content: flex-end;
     }
   }
   &__drag-icon {
@@ -715,6 +714,11 @@ export default {
     align-items: center;
     justify-content: flex-end;
     margin: var(--spacer-xs) 0 var(--spacer-xs);
+    a{
+      @include for-desktop {
+        width: 130px;
+      }
+    }
   }
   &__count {
     @include font(
