@@ -46,8 +46,10 @@
           "
           :totalProductPrice="
             $n(
-              cartGetters.getItemPrice(product).regular *
-                cartGetters.getItemQty(product),
+              cartGetters.getItemPrice(product).special
+                ? cartGetters.getItemPrice(product).special
+                : cartGetters.getItemPrice(product).regular *
+                    cartGetters.getItemQty(product),
               'currency'
             )
           "
@@ -137,9 +139,7 @@
       <SfButton
         class="sf-add-to-cart__button cart_update_actions"
         :disabled="loading"
-        @click="
-          updateQuantity(product,cartGetters.getItemQty(product))
-        "
+        @click="updateQuantity(product, cartGetters.getItemQty(product))"
       >
         Update Bag
       </SfButton>

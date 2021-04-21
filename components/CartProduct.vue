@@ -24,6 +24,7 @@
         <SfPrice
           class="sf-product-card__price productPrice"
           :regular="regularprice"
+          :special="specialprice"
         />
         <SfHeading :level="5" :title="$t('Inc. VAT')" class="cart_vat" />
         <div class="exclusive_delivery_div">
