@@ -258,7 +258,6 @@
                   )}`
                 )
               "
-              :product="product"
               class="products__product-card"
               @click:wishlist="addItemToWishlist({ product })"
               @click:add-to-cart="

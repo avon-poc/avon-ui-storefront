@@ -115,7 +115,7 @@
             </SfButton>
           </div>
           <div v-else>
-            <SfButton :key="Date.now()" class="atbbtn" @click="(e)=>{onAddToCart(e,product)}">
+            <SfButton :key="Date.now()" class="atbbtn" @click="onAddToCart">
               Add to Bag
             </SfButton>
           </div>
@@ -339,8 +339,7 @@ export default {
     toggleIsOnWishlist() {
       this.$emit("click:wishlist", !this.isOnWishlist);
     },
-    onAddToCart(event,product) {
-      console.log("onAddToCart>>>>>>>>>>>>", product);
+    onAddToCart(event) {
       var apiApptus = window.esalesAPI({
         market: "UK",
         clusterId: "wFE4AE5CF",
