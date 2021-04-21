@@ -302,12 +302,7 @@ export default {
     variant: {
       type: [String, Object],
       default: "",
-    },
-
-    product: {
-      type: [Array, Object, String],
-      default: "",
-    },
+    }
   },
   data() {
     return {
