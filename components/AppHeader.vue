@@ -224,7 +224,7 @@
             </SfButton>
             <SfButton
               class="sf-button--pure sf-header__action"
-              @click="routeCart"
+              @click="toggleCartSidebar"
             >
               <SfIcon
                 class="sf-header__icon"

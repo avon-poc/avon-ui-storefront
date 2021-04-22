@@ -7,12 +7,12 @@
         class="sf-header__logo"
       >
         <SfLink class="sf-product-card__link navTitle">
-          Continue Shopping
+          {{ $t("Continue Shopping") }}
           <SfIcon
             v-bind="icon"
             icon="chevron_left"
             class="navIcon"
-            color="#7f28c4"
+            color=" var(--c-primary)"
             size="sm"
           />
         </SfLink>
@@ -24,17 +24,41 @@
         :title="$t('Your Shopping Bag') + `${'(' + totalItems + ')'}`"
         class="cart_title"
       />
+      <nuxt-link
+        data-cy="app-header-url_logo"
+        :to="localePath('/')"
+        class="sf-header__logo desktop-only"
+      >
+        <SfLink class="sf-product-card__link navLink_top">
+          {{ $t("Continue Shopping arrow") }}
+        </SfLink>
+      </nuxt-link>
+      <div class="actions_top desktop-only">
+        <SfButton
+          class="sf-add-to-cart__button cart_update_actions"
+          :disabled="loading"
+          @click="updateQuantity(product, cartGetters.getItemQty(product))"
+        >
+          Update Bag
+        </SfButton>
+        <nuxt-link :to="`/checkout/shipping`">
+          <SfButton
+            class="sf-add-to-cart__button cart_checkout_actions"
+            :disabled="loading"
+          >
+            Go to checkout
+          </SfButton>
+        </nuxt-link>
+      </div>
     </div>
     <div v-if="totalItems" class="my-cart">
-      <SfTable class="sf-table--no-border desktop-only">
-        <SfTableHeading class="cart_tableheading">
-          <SfTableHeader>ITEMS</SfTableHeader>
-          <SfTableHeader></SfTableHeader>
-          <SfTableHeader>ITEM PRICE</SfTableHeader>
-          <SfTableHeader>QUANTITY</SfTableHeader>
-          <SfTableHeader>SUBTOTAL</SfTableHeader>
-        </SfTableHeading>
-      </SfTable>
+      <div class="cart_headers desktop-only">
+        <SfHeading :level="6" title="ITEMS" />
+        <SfHeading :level="6" title="" />
+        <SfHeading :level="6" title="ITEM PRICE" class="cart_header_price" />
+        <SfHeading :level="6" title="QUANTITY" />
+        <SfHeading :level="6" title="SUBTOTAL" />
+      </div>
       <div v-for="(product, i) in products" :key="i">
         <CartProduct
           :image="cartGetters.getItemImage(product)"
@@ -46,6 +70,15 @@
             cartGetters.getItemPrice(product).special &&
             $n(cartGetters.getItemPrice(product).special, 'currency')
           "
+          :totalProductPrice="
+            $n(
+              (cartGetters.getItemPrice(product).special
+                ? cartGetters.getItemPrice(product).special
+                : cartGetters.getItemPrice(product).regular) *
+                cartGetters.getItemQty(product),
+              'currency'
+            )
+          "
           :stock="99999"
           :link="
             localePath(
@@ -53,7 +86,7 @@
             )
           "
           :qty="cartGetters.getItemQty(product)"
-          @input="updateItemQty({ product, quantity: $event })"
+          @input="updateQuantity(product, $event)"
           @click:remove="removeItem({ product })"
         />
       </div>
@@ -74,32 +107,12 @@
         />
 
         <SfLink class="sf-product-card__link" :link="localePath('/')">
-          Continue Shopping
+          {{ $t("Continue Shopping") }}
         </SfLink>
         <h3>|</h3>
         <SfLink class="sf-product-card__link"> Your Wishlist </SfLink>
       </div>
     </div>
-    <!-- <div class="cart_voucher">
-      <SfInput
-        data-cy="cart-preview-input_promoCode"
-        v-model="promoCode"
-        name="voucherCode"
-        :label="$t('Enter voucher code')"
-        id="cart_promo"
-        class="sf-input--filled promo-code__input voucher_input"
-      />
-      <SfButton
-        class="promo-code__button"
-        @click="() => applyCoupon({ couponCode: promoCode })"
-        >{{ $t("Apply") }}</SfButton
-      >
-      <SfButton
-        class="promo-code__button"
-        @click="() => applyCoupon({ couponCode: promoCode })"
-        >{{ $t("Remove") }}</SfButton
-      >
-    </div> -->
     <div class="highlighted promo-code" v-if="totalItems">
       <SfInput
         v-if="!coupons[0]"
@@ -107,7 +120,7 @@
         v-model="promoCode"
         name="promoCode"
         :label="$t('Enter promo code')"
-        class="sf-input--filled promo-code__input"
+        class="sf-input--filled voucher_input"
       />
       <SfButton
         v-if="!coupons[0]"
@@ -127,50 +140,43 @@
       <SfAlert message="Invalid Coupon!" type="danger" />
     </p>
     <div class="cart_bottom" v-if="totalItems">
-      <nuxt-link
-        data-cy="app-header-url_logo"
-        :to="localePath('/')"
-        class="sf-header__logo"
+      <SfLink
+        class="sf-product-card__link cart_navlink smartphone-only"
+        :link="localePath('/')"
       >
-        <SfLink class="sf-product-card__link cart_navlink">
-          Continue Shopping
-        </SfLink>
-      </nuxt-link>
-      <div class="cart_subtotal" >
-        <SfHeading :level="5" :title="$t('SUBTOTAL: ')"/>
+        Continue Shopping
+      </SfLink>
+      <div class="cart_subtotal">
         <SfHeading
           :level="5"
-          :title="$n(totals.total, 'currency')"
+          :title="$t('SUBTOTAL: ')"
+          class="cart_subtotal-title"
         />
+        <SfHeading :level="5" :title="$n(totals.total, 'currency')" />
       </div>
     </div>
     <div class="cart_actions" v-if="totalItems">
+      <SfLink
+        class="sf-product-card__link desktop-only continue_link"
+        :link="localePath('/')"
+      >
+        {{ $t("Continue Shopping") }}
+      </SfLink>
       <SfButton
         class="sf-add-to-cart__button cart_update_actions"
         :disabled="loading"
-        @click="
-          addItem({
-            product,
-            quantity: parseInt(qty),
-            repId: 'rep01',
-          })
-        "
+        @click="updateQuantity(product, cartGetters.getItemQty(product))"
       >
         Update Bag
       </SfButton>
-      <SfButton
-        class="sf-add-to-cart__button cart_checkout_actions"
-        :disabled="loading"
-        @click="
-          addItem({
-            product,
-            quantity: parseInt(qty),
-            repId: 'rep01',
-          })
-        "
-      >
-        Go to checkout
-      </SfButton>
+      <nuxt-link :to="`/checkout/shipping`">
+        <SfButton
+          class="sf-add-to-cart__button cart_checkout_actions"
+          :disabled="loading"
+        >
+          Go to checkout
+        </SfButton>
+      </nuxt-link>
     </div>
     <div class="cart_payment_options" v-if="totalItems">
       <SfHeading :level="3" :title="$t('We accept')" class="payment_title" />
@@ -279,10 +285,7 @@ export default {
     const totalItems = computed(() => cartGetters.getTotalItems(cart.value));
     const coupons = computed(() => cartGetters.getCoupons(cart.value));
     const promoCode = ref("");
-
-    const addCoupon = (obj, err) => {
-      applyCoupon(obj);
-    };
+    // console.log("coupons>>>", coupons.value);
 
     const remCoupon = (couponObj) => {
       promoCode.value = "";
@@ -291,9 +294,18 @@ export default {
       });
     };
 
+    const updateQuantity = (product, quantity) => {
+      console.log("updateQuantity>>>", product, typeof parseInt(quantity));
+      updateItemQty({ product, quantity: parseInt(quantity) });
+    };
+
     onSSR(async () => {
       await loadCart();
-      console.log("\n gdgd", products.value[0]);
+      // console.log(
+      //   "\n gdgd",
+      //   cartGetters.getItemPrice(products.value[0]).regular *
+      //     cartGetters.getItemQty(products.value[0])
+      // );
     });
 
     return {
@@ -309,10 +321,10 @@ export default {
       applyCoupon,
       promoCode,
       productGetters,
-      addCoupon,
       remCoupon,
       coupons,
       error,
+      updateQuantity,
     };
   },
 };
@@ -323,6 +335,18 @@ export default {
     tr {
       th {
         margin-right: 10px;
+      }
+    }
+  }
+  .my-cart {
+    .cart_headers {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 3px solid;
+      border-bottom-color: lightgrey;
+      padding-bottom: 10px;
+      .cart_header_price {
+        margin-left: 240px;
       }
     }
   }
@@ -361,20 +385,40 @@ export default {
 }
 
 .cart_header {
+  @include for-desktop {
+    display: flex;
+    align-items: baseline;
+  }
   .cart_title {
     margin: 10px 0px;
+  }
+  .navLink_top {
+    color: #707677;
+    font-size: 12px;
+  }
+  .actions_top {
+    display: flex;
+    margin-left: auto;
+    .cart_update_actions {
+      width: 170px;
+      margin: 20px 10px;
+      background: white;
+      border: 1px solid;
+      color: var(--c-primary);
+      border-radius: 5px;
+      height: 40px;
+    }
+    .cart_checkout_actions {
+      width: 190px;
+      margin: 20px 10px;
+      border-radius: 5px;
+      height: 40px;
+    }
   }
 }
 .cart_voucher {
   display: flex;
   margin: 15px 10px;
-  .voucher_input {
-    div {
-      input {
-        border-radius: 35px;
-      }
-    }
-  }
   .promo-code__button {
     background: white;
     color: var(--c-primary);
@@ -408,6 +452,14 @@ export default {
     margin-top: 25px;
   }
   .cart_subtotal {
+    .cart_subtotal-title {
+      @include for-desktop {
+        margin-right: 50px;
+      }
+    }
+    @include for-desktop {
+      display: flex;
+    }
     font-family: var(--font-family);
     font-size: 12px;
     float: right;
@@ -418,16 +470,32 @@ export default {
 
 .cart_actions {
   margin-top: 10px;
+  @include for-desktop {
+    display: flex;
+    margin-top: 50px;
+    margin-left: 10px;
+  }
+  .continue_link {
+    float: left;
+    margin-top: 30px;
+    color: var(--c-primary);
+  }
   .cart_update_actions {
+    @include for-desktop {
+      width: 170px;
+    }
     margin: 20px 10px;
     width: 385px;
     background: white;
     border: 1px solid;
-    color: #7f28c4;
+    color: var(--c-primary);
     border-radius: 5px;
     height: 40px;
   }
   .cart_checkout_actions {
+    @include for-desktop {
+      width: 190px;
+    }
     margin: 20px 10px;
     width: 385px;
     border-radius: 5px;
@@ -435,14 +503,22 @@ export default {
   }
 }
 .cart_payment_options {
-  border-bottom: 1px solid gray;
-  padding-bottom: 50px;
+  @include for-mobile {
+    border-bottom: 1px solid gray;
+    padding-bottom: 50px;
+  }
+  @include for-desktop {
+    display: flex;
+  }
   .payment_title {
     font-family: var(--font-family);
   }
   .payment_options {
     display: flex;
     justify-content: center;
+    @include for-desktop {
+      margin-left: 10px;
+    }
     div {
       margin-right: 10px;
     }
@@ -458,6 +534,17 @@ export default {
   &__input {
     --input-background: var(--c-white);
     flex: 1;
+  }
+  .voucher_input {
+    width: 275px;
+    height: 50px;
+    margin: 0px 10px;
+    text-align: left;
+    .sf-input__wrapper {
+      input {
+        border-radius: 35px;
+      }
+    }
   }
 }
 .promo-code__button {
