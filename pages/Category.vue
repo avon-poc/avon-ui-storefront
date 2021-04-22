@@ -224,7 +224,7 @@
       <SfLoader :class="{ loading }" :loading="loading">
         <div class="products" v-if="!loading">
           <transition-group
-            v-if="isCategoryGridView"
+            v-if="!isCategoryGridView"
             appear
             name="products__slide"
             tag="div"
