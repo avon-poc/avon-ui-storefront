@@ -36,7 +36,6 @@ async function getAuthToken() {
             }
         }
         const data = await axios.post(authUrl, {}, basicAuth);
-        console.log('token', data)
         setCookie('auth_token', data.data.access_token, 1);
         return data.data.access_token;
     }
