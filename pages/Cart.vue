@@ -7,7 +7,7 @@
         class="sf-header__logo"
       >
         <SfLink class="sf-product-card__link navTitle">
-          Continue Shopping
+          {{ $t("Continue Shopping") }}
           <SfIcon
             v-bind="icon"
             icon="chevron_left"
@@ -24,6 +24,32 @@
         :title="$t('Your Shopping Bag') + `${'(' + totalItems + ')'}`"
         class="cart_title"
       />
+      <nuxt-link
+        data-cy="app-header-url_logo"
+        :to="localePath('/')"
+        class="sf-header__logo desktop-only"
+      >
+        <SfLink class="sf-product-card__link navLink_top">
+          {{ $t("Continue Shopping arrow") }}
+        </SfLink>
+      </nuxt-link>
+      <div class="actions_top desktop-only">
+        <SfButton
+          class="sf-add-to-cart__button cart_update_actions"
+          :disabled="loading"
+          @click="updateQuantity(product, cartGetters.getItemQty(product))"
+        >
+          Update Bag
+        </SfButton>
+        <nuxt-link :to="`/checkout/shipping`">
+          <SfButton
+            class="sf-add-to-cart__button cart_checkout_actions"
+            :disabled="loading"
+          >
+            Go to checkout
+          </SfButton>
+        </nuxt-link>
+      </div>
     </div>
     <div v-if="totalItems" class="my-cart">
       <div class="cart_headers desktop-only">
@@ -46,10 +72,10 @@
           "
           :totalProductPrice="
             $n(
-             ( cartGetters.getItemPrice(product).special
+              (cartGetters.getItemPrice(product).special
                 ? cartGetters.getItemPrice(product).special
                 : cartGetters.getItemPrice(product).regular) *
-                    cartGetters.getItemQty(product),
+                cartGetters.getItemQty(product),
               'currency'
             )
           "
@@ -81,7 +107,7 @@
         />
 
         <SfLink class="sf-product-card__link" :link="localePath('/')">
-          Continue Shopping
+          {{ $t("Continue Shopping") }}
         </SfLink>
         <h3>|</h3>
         <SfLink class="sf-product-card__link"> Your Wishlist </SfLink>
@@ -134,7 +160,7 @@
         class="sf-product-card__link desktop-only continue_link"
         :link="localePath('/')"
       >
-        Continue Shopping
+        {{ $t("Continue Shopping") }}
       </SfLink>
       <SfButton
         class="sf-add-to-cart__button cart_update_actions"
@@ -359,8 +385,35 @@ export default {
 }
 
 .cart_header {
+  @include for-desktop {
+    display: flex;
+    align-items: baseline;
+  }
   .cart_title {
     margin: 10px 0px;
+  }
+  .navLink_top {
+    color: #707677;
+    font-size: 12px;
+  }
+  .actions_top {
+    display: flex;
+    margin-left: auto;
+    .cart_update_actions {
+      width: 170px;
+      margin: 20px 10px;
+      background: white;
+      border: 1px solid;
+      color: var(--c-primary);
+      border-radius: 5px;
+      height: 40px;
+    }
+    .cart_checkout_actions {
+      width: 190px;
+      margin: 20px 10px;
+      border-radius: 5px;
+      height: 40px;
+    }
   }
 }
 .cart_voucher {
