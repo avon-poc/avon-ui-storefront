@@ -303,7 +303,7 @@ export default {
     variant: {
       type: [String, Object],
       default: "",
-    },
+    }
   },
   data() {
     return {
@@ -336,6 +336,12 @@ export default {
       this.$emit("click:wishlist", !this.isOnWishlist);
     },
     onAddToCart(event) {
+      var apiApptus = window.esalesAPI({
+        market: "UK",
+        clusterId: "wFE4AE5CF",
+      });
+      apiApptus.notify.nonEsalesClick({ productKey:"1137_UK"});
+      // apiApptus.notify.addToCart("Oy9keW5hbWljLXBhZ2VzL3N0YXJ0L2VzYWxlcy1zdGFydC0xOyM7cHJvZHVjdF9rZXk7UF8xMjUzODMtMDAxNF9VSzsjOztOT05FOk5PTkU7NjE7");
       event.preventDefault();
       this.isAddingToCart = true;
       setTimeout(() => {

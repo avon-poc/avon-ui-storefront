@@ -12,12 +12,6 @@
           :level="3"
           class="sf-heading--no-underline sf-heading--left"
         />
-        <SfIcon
-          icon="drag"
-          size="xxl"
-          color="var(--c-text-disabled)"
-          class="product__drag-icon smartphone-only"
-        />
       </div>
       <div class="RatingAndShare">
         <div class="product__rating contentPadding">
@@ -263,7 +257,10 @@
         </div>
 
         <LazyHydrate when-idle>
-          <SfTabs :open-tab="0" class="product__tabs">
+          <SfTabs
+            :open-tab="isMobile ? 0 : 1"
+            class="product__tabs smartphone-only"
+          >
             <SfTab data-cy="product-tab_description" title="Description">
               <div class="product__description" v-html="description"></div>
               <!-- <SfProperty
@@ -317,44 +314,67 @@
             </SfTab>
           </SfTabs>
         </LazyHydrate>
-        <div class="common-rep-block">
-          <SfHeading
-            class="heading-offer"
-            :title="$t('Get Exclusive Special Offers & The Latest News')"
-          />
-          <SfLink class="sf-product-card__link subscribePDP"
-            >SUBSCRIBE / SIGN UP >
-          </SfLink>
-          <div class="smartphone-only">
-            <SfButton
-              class="sf-add-to-cart__button atbbtnPDP repButton"
-              :disabled="loading"
-              @click="
-                addItem({
-                  product,
-                  quantity: parseInt(qty),
-                  repId: 'rep01',
-                })
-              "
-            >
-              Find a Representative
-            </SfButton>
-            <SfButton
-              class="sf-add-to-cart__button atbbtnPDP repButton"
-              :disabled="loading"
-              @click="
-                addItem({
-                  product,
-                  quantity: parseInt(qty),
-                  repId: 'rep01',
-                })
-              "
-            >
-              Become a Representative
-            </SfButton>
-          </div>
+        <div class="common-rep-block smartphone-only">
+          <BottomRepBlock />
         </div>
       </div>
+    </div>
+    <div class="desktop-only">
+      <LazyHydrate when-idle>
+        <SfTabs :open-tab="isMobile ? 0 : 1" class="product__tabs">
+          <SfTab data-cy="product-tab_description" title="Description">
+            <div class="product__description" v-html="description"></div>
+            <!-- <SfProperty
+                v-for="(property, i) in properties"
+                :key="i"
+                :name="property.name"
+                :value="property.value"
+                class="product__property"
+              >
+                <template v-if="property.name === 'Category'" #value>
+                  <SfButton class="product__property__button sf-button--text">
+                    {{ property.value }}
+                  </SfButton>
+                </template>
+              </SfProperty> -->
+          </SfTab>
+          <!-- <SfTab title="Read reviews" data-cy="product-tab_reviews">
+              <SfReview
+                v-for="review in reviews"
+                :key="reviewGetters.getReviewId(review)"
+                :author="reviewGetters.getReviewAuthor(review)"
+                :date="reviewGetters.getReviewDate(review)"
+                :message="reviewGetters.getReviewMessage(review)"
+                :max-rating="5"
+                :rating="reviewGetters.getReviewRating(review)"
+                :char-limit="250"
+                read-more-text="Read more"
+                hide-full-text="Read less"
+                class="product__review"
+              />
+            </SfTab> -->
+          <SfTab
+            title="Delivery & Returns"
+            data-cy="product-tab_additional"
+            class="product__additional-info"
+          >
+            <div class="product__additional-info">
+              <p class="product__additional-info__title">{{ $t("Brand") }}</p>
+              <p>{{ brand }}</p>
+              <p class="product__additional-info__title">
+                {{ $t("Instruction1") }}
+              </p>
+              <p class="product__additional-info__paragraph">
+                {{ $t("Instruction2") }}
+              </p>
+              <p class="product__additional-info__paragraph">
+                {{ $t("Instruction3") }}
+              </p>
+              <p>{{ careInstructions }}</p>
+            </div>
+          </SfTab>
+        </SfTabs>
+      </LazyHydrate>
     </div>
 
     <!-- <LazyHydrate when-visible>
@@ -421,6 +441,7 @@ import {
   unMapMobileObserver,
 } from "@storefront-ui/vue/src/utilities/mobile-observer.js";
 import ShadeWrap from "~/components/ShadeWrap";
+import BottomRepBlock from "~/components/BottomRepBlock";
 
 export default {
   name: "Product",
@@ -589,6 +610,7 @@ export default {
     ShadeWrap,
     SfLink,
     SfQuantitySelector,
+    BottomRepBlock,
   },
   data() {
     return {
@@ -672,6 +694,7 @@ export default {
     @include for-desktop {
       --heading-title-font-weight: var(--font-weight--semibold);
       margin: 0 auto;
+      justify-content: flex-end;
     }
   }
   &__drag-icon {
@@ -691,6 +714,11 @@ export default {
     align-items: center;
     justify-content: flex-end;
     margin: var(--spacer-xs) 0 var(--spacer-xs);
+    a{
+      @include for-desktop {
+        width: 130px;
+      }
+    }
   }
   &__count {
     @include font(
