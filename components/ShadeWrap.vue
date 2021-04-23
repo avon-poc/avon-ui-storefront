@@ -1,25 +1,19 @@
 <template>
-  <div :class="activeShadeClasses(title)">
+  <div :class="activeShadeClasses(title)"  @click="$emit('click:shadeChange', title)">
     <div class="shadewrap">
       <SfImage
         :src="imagesrc"
         alt="Vila stripe maxi shirt dress"
         :width="25"
         :height="19"
-        @click="$emit('click:shadeChange', title)"
       />
     </div>
     <div class="shadetitle">
-      <SfLink
-        class="sf-product-card__link"
-        @click="$emit('click:shadeChange', title)"
-      >
         <SfHeading
           :level="5"
           :title="title"
           class="filters__title sf-heading--left"
         />
-      </SfLink>
     </div>
   </div>
 </template>
