@@ -143,7 +143,9 @@
                 class="whiteFill"
               ></path>
             </svg>
-            <span class="cart-count" v-if="cartTotalItems">{{ cartTotalItems }}</span>
+            <span class="cart-count" v-if="cartTotalItems">{{
+              cartTotalItems
+            }}</span>
           </div>
         </div>
       </div>
@@ -322,7 +324,13 @@ import {
   useFacet,
   useCategory,
 } from "@vue-storefront/commercetools";
-import { computed, ref, onBeforeUnmount, watch } from "@vue/composition-api";
+import {
+  computed,
+  ref,
+  onBeforeUnmount,
+  watch,
+  onMounted,
+} from "@vue/composition-api";
 import { onSSR } from "@vue-storefront/core";
 import { useUiHelpers } from "~/composables";
 import LocaleSelector from "./LocaleSelector";
@@ -377,7 +385,7 @@ export default {
       };
     });
 
-     const routeCart = () => {
+    const routeCart = () => {
       return root.$router.push(`/cart`);
     };
 
@@ -410,6 +418,14 @@ export default {
       menuOpen.value = !menuOpen.value;
       console.log("toggling", menuLeftPosition.value);
     };
+
+    onMounted(() => {
+      var apiApptus = window.esalesAPI({
+        market: "UK",
+        clusterId: "wFE4AE5CF",
+      });
+      window.apiApptus=apiApptus;
+    });
 
     onSSR(async () => {
       await loadUser();
@@ -487,7 +503,7 @@ export default {
       searchBarRef,
       isMobile,
       categoryList,
-      routeCart
+      routeCart,
     };
   },
 };

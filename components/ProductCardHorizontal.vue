@@ -40,6 +40,7 @@
             :alt="title"
             :width="imageWidth"
             :height="imageHeight"
+            @click="productClick"
           />
         </SfLink>
       </slot>
@@ -47,13 +48,13 @@
     <div class="sf-product-card-horizontal__main">
       <div class="sf-product-card-horizontal__details">
         <!--@slot Use this slot to replace title-->
-        <slot name="title" v-bind="{ title, link }">
+        <div name="title" v-bind="{ title, link }" @click="productClick">
           <SfLink :link="link" class="sf-product-card-horizontal__link">
             <h3 class="sf-product-card-horizontal__title">
               {{ title }}
             </h3>
           </SfLink>
-        </slot>
+        </div>
         <slot v-bind="{ maxRating, scoreRating }">
           <div
             v-if="typeof scoreRating === 'number'"
@@ -105,8 +106,8 @@
                 View Size Options
               </SfButton>
             </div>
-            <div v-else-if="variant.key === 'variant'" appear tag="div">
-              <SfButton :key="Date.now()" class="atbbtn viewcolor" :link="link">
+            <div v-else-if="variant.key === 'variant'" appear tag="div" @click="productClick">
+              <SfButton :key="Date.now()" class="atbbtn viewcolor" :link="link" >
                 View Product
               </SfButton>
             </div>
@@ -288,12 +289,16 @@ export default {
       this.$emit("click:wishlist", !this.isOnWishlist);
     },
     onAddToCart(event) {
+      window.apiApptus.notify.nonEsalesAddToCart({ productKey: "1137_UK" });
       event.preventDefault();
       this.isAddingToCart = true;
       setTimeout(() => {
         this.isAddingToCart = false;
       }, 1000);
       this.$emit("click:add-to-cart");
+    },
+    productClick() {
+      window.apiApptus.notify.nonEsalesClick({ productKey: "1137_UK" });
     },
     onQuantitySelect(event) {
       console.log("qty>>>>>>>>>>>>");

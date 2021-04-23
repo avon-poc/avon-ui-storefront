@@ -37,6 +37,7 @@
               :alt="title"
               :width="imageWidth"
               :height="imageHeight"
+              @click="productClick"
             />
           </SfLink>
         </slot>
@@ -51,13 +52,16 @@
       </div>
     </div>
     <div class="contentwrap">
-      <slot name="title" v-bind="{ title, link }">
-        <SfLink :link="link" class="sf-product-card__link">
+      <div name="title" v-bind="{ title, link }" @click="productClick">
+        <SfLink
+          :link="link"
+          class="sf-product-card__link"
+        >
           <h3 class="sf-product-card__title productTitle">
             {{ title }}
           </h3>
         </SfLink>
-      </slot>
+      </div>
       <slot name="reviews" v-bind="{ maxRating, scoreRating }">
         <div
           v-if="typeof scoreRating === 'number'"
@@ -109,12 +113,12 @@
               View Size Options
             </SfButton>
           </div>
-          <div v-else-if="variant.key === 'variant'" appear tag="div">
+          <div v-else-if="variant.key === 'variant'" appear tag="div"  @click="productClick">
             <SfButton :key="Date.now()" class="atbbtn viewcolor" :link="link">
               View Product
             </SfButton>
           </div>
-          <div v-else-if="variant.key === 'NoBtn'" appear tag="div"/>
+          <div v-else-if="variant.key === 'NoBtn'" appear tag="div" />
           <div v-else>
             <SfButton :key="Date.now()" class="atbbtn" @click="onAddToCart">
               Add to Bag
@@ -303,7 +307,7 @@ export default {
     variant: {
       type: [String, Object],
       default: "",
-    }
+    },
   },
   data() {
     return {
@@ -336,11 +340,7 @@ export default {
       this.$emit("click:wishlist", !this.isOnWishlist);
     },
     onAddToCart(event) {
-      var apiApptus = window.esalesAPI({
-        market: "UK",
-        clusterId: "wFE4AE5CF",
-      });
-      apiApptus.notify.nonEsalesClick({ productKey:"1137_UK"});
+      window.apiApptus.notify.nonEsalesAddToCart({ productKey: "1137_UK" });
       // apiApptus.notify.addToCart("Oy9keW5hbWljLXBhZ2VzL3N0YXJ0L2VzYWxlcy1zdGFydC0xOyM7cHJvZHVjdF9rZXk7UF8xMjUzODMtMDAxNF9VSzsjOztOT05FOk5PTkU7NjE7");
       event.preventDefault();
       this.isAddingToCart = true;
@@ -348,6 +348,9 @@ export default {
         this.isAddingToCart = false;
       }, 1000);
       this.$emit("click:add-to-cart");
+    },
+    productClick() {
+      window.apiApptus.notify.nonEsalesClick({ productKey: "1137_UK" });
     },
     onQuantitySelect(event) {
       console.log("qty>>>>>>>>>>>>");
