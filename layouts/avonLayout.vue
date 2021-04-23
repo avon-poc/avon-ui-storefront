@@ -64,9 +64,14 @@ export default {
 #layout {
   box-sizing: border-box;
   @include for-desktop {
-    max-width: 1240px;
+    max-width: 976px;
     margin: auto;
   }
+}
+
+.main_Wrapper{
+  max-width: 976px;
+  margin:0 auto;
 }
 
 // Reset CSS
