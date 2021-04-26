@@ -150,11 +150,11 @@
       <div class="seperator-avon"></div>
       <SfSearchBar
         ref="searchBarRef"
-        :placeholder="$t('Search for items')"
+        :placeholder="$t('Search for product name')"
         aria-label="Search"
         class="sf-header__search"
         :value="term"
-        v-on:keyup.enter="handleSearch($event)"
+        v-on.enter="handleSearch($event)"
         v-click-outside="closeSearch"
       >
         <template #icon>
@@ -242,15 +242,11 @@
         <template #search>
           <SfSearchBar
             ref="searchBarRef"
-            :placeholder="$t('Search for items')"
+            :placeholder="$t('Search for product name')"
             aria-label="Search"
             class="sf-header__search"
             :value="term"
-            @input="handleSearch"
             @keydown.enter="handleSearch($event)"
-            @focus="isSearchOpen = true"
-            @keydown.esc="closeSearch"
-            v-click-outside="closeSearch"
           >
             <template #icon>
               <SfButton

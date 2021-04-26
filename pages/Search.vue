@@ -84,21 +84,21 @@
           </LazyHydrate>
           <div class="navbar__sort sortBy">
             <span class="navbar__label">{{ $t("Sort By") }}:</span>
-              <SfSelect
-                :value="seachSortBy.selected"
-                placeholder="Select sorting"
-                data-cy="category-select_sortBy"
-                class="navbar__select"
-                @input="th.changeSorting"
+            <SfSelect
+              :value="seachSortBy.selected"
+              placeholder="Select sorting"
+              data-cy="category-select_sortBy"
+              class="navbar__select"
+              @input="th.changeSorting"
+            >
+              <SfSelectOption
+                v-for="option in seachSortBy.options"
+                :key="option.id"
+                :value="option.id"
+                class="sort-by__option"
+                >{{ option.value }}</SfSelectOption
               >
-                <SfSelectOption
-                  v-for="option in seachSortBy.options"
-                  :key="option.id"
-                  :value="option.id"
-                  class="sort-by__option"
-                  >{{ option.value }}</SfSelectOption
-                >
-              </SfSelect>
+            </SfSelect>
           </div>
            
           <!-- <div class="navbar__counter">
@@ -167,8 +167,8 @@
                     :name="facet.attribute + '-' + index"
                     :label="item.text"
                     :value="item.text"
-                    :selected="isFilterSelected(facet, item)"
-                    :change="selectFilter(facet, item)"
+                    v-model="handleFilter"
+                    @change="selectFilter(facet, item)"
                     valid
                   />
                 </div>
@@ -357,12 +357,11 @@
 <script>
 import { useUiHelpers } from "~/composables";
 import { ref, computed, onMounted } from "@vue/composition-api";
-import { getCurrentInstance } from "@vue/composition-api";
 import LazyHydrate from "vue-lazy-hydration";
 import ProductCard from "../components/ProductCard";
 import ProductCardHorizontal from "../components/ProductCardHorizontal";
 import { useCart } from "@vue-storefront/commercetools";
-import Vue from 'vue';
+import Vue from "vue";
 import {
   SfSidebar,
   SfButton,
@@ -392,21 +391,27 @@ export default {
     const products = ref();
     const didYouMean = ref();
     const facets = ref([]);
-    const productCount = ref(2);
-    const filterCheck = ref(false);
+    const productCount = ref(0);
     const handleFilter = ref([]);
-    const selectedFilters = ref({});
     const selectedFacet = ref({});
 
-    const getInstance = () => {
-      const vm = getCurrentInstance();
-      return vm.$root;
-    };
-    const instance = getInstance();
+    const { getSearchTermFromUrl, changeFilters } = useUiHelpers();
     const th = useUiHelpers();
-    const { query } = instance.$router.history.current;
+    const query = getSearchTermFromUrl();
+    query.sort = query.sort === "latest" ? "relevance" : query.sort;
+
+    console.log("searchTerm", getSearchTermFromUrl());
 
     const { addItem: addItemToCart, isInCart } = useCart();
+    const loading = false; // NEED TO MAKE DYANAMIC
+    const pagination = ref({
+      currentPage: 1,
+      totalPages: 1,
+      totalItems: 2,
+      itemsPerPage: 20,
+      pageOptions: [20, 40, 100],
+    }); // NEED TO MAKE DYANAMIC
+    const isCategoryGridView = ref(true); // NEED TO MAKE DYANAMIC
     const sortBy = ref({
       options: [
         {
@@ -465,16 +470,7 @@ export default {
         selected: query.sort,
       };
     });
-    
-    const loading = false; // NEED TO MAKE DYANAMIC
-    const pagination = ref({
-      currentPage: 1,
-      totalPages: 1,
-      totalItems: 2,
-      itemsPerPage: 20,
-      pageOptions: [20, 40, 100],
-    }); // NEED TO MAKE DYANAMIC
-    const isCategoryGridView = ref(true); // NEED TO MAKE DYANAMIC
+
     const qty = ref(1);
     const addItemToCart1 = async (productdet, qty) => {
       await search({ id: "c0fad67f-d10c-494c-9b8f-ed7e1604ca05" }); //productdet.obj.id
@@ -488,38 +484,36 @@ export default {
         clusterId: "wFE4AE5CF",
       });
 
-      var fb = new apiApptus.utils.FilterBuilder();
+      // Adding Sorting
+      let sortByQuery =
+        typeof query.sort !== "undefined" ? query.sort : "relevance";
+
+      //Search query object
+      let filterObj = {
+        window_first: 1,
+        window_last: 10,
+        search_phrase: query.term,
+        max_facets: 10,
+        sort_by: sortByQuery,
+      };
+
+      // filter by facets
+      let facetsByQuery =
+        query.filters && Object.keys(query.filters).length === 0
+          ? ""
+          : query.filters.discount_band;
       var facet = new apiApptus.utils.Facet();
 
-      //var filter = fb.attribute('color', 'green');
-      facet.add("discount_band", '0 to 10%');
+      // adding facets to search query object
+      if (facetsByQuery) {
+        facet.add("discount_band", facetsByQuery);
+        filterObj = { ...filterObj, facets: facet.toString() };
+      }
 
+      // Querying Apptus Api
       apiApptus
-        .panel("/search-page/search-result-zone", {
-          window_first: 1,
-          window_last: 10,
-          search_phrase: query.term,
-          sort_by: "price asc",
-          //filter: filter.toString(),
-          facets: facet.toString(),
-        })
+        .panel("/search-page/search-result-zone", filterObj)
         .then(function (data) {
-          console.log("success", data);
-        })
-        .catch(function (err) {
-          console.log("error-f", err);
-        });
-      let sortByQuery = typeof query.sort !== "undefined" ? query.sort : "relevance";
-      apiApptus
-        .panel("/search-page/search-result-zone", {
-          window_first: 1,
-          window_last: 10,
-          search_phrase: query.term,
-          max_facets: 10,
-          sort_by: sortByQuery,
-        })
-        .then(function (data) {
-          console.log("resppnse", data.response);
           productCount.value = data.response.productCount[0].count;
           products.value = [...data.response.hits[0].products];
           facets.value = [...data.response.hits[1].facetList];
@@ -528,11 +522,19 @@ export default {
         .catch(function (data) {
           console.log("Error: ", data);
         });
-      //console.log('asdf-in');
 
-      //SearchData.value.productCount[0].count
+      if(!(query.filters && Object.keys(query.filters).length === 0)){
+        console.log('asdfasdf');
+        selectedFacet.value = {...query.filters};
+      }
+
+      //updating filter on reload
+      // handleFilter.value = [
+      //     '0 to 10%'
+      //   ]
     });
 
+    // Updating List of facets available
     const searchFacets = computed(() => {
       return {
         ...facets.value.filter((facet) => {
@@ -541,35 +543,33 @@ export default {
       };
     });
 
-    const isFilterSelected = (facet, item) =>
-      (selectedFilters.value[facet.id] || []).includes(item.text);
-
-  const selectFilter = (facet, item) => {
-    console.log('asdf', {facet, item});
-    //if(handleFilter.value.includes(item.text)){
-      // if (!selectedFacet.value[facet.attribute]) {
-      //   Vue.set(selectedFacet.value, facet.attribute, []);
-      // }
-      // if (selectedFacet.value[facet.attribute].find((f) => f === item.text)) {
-      //   selectedFacet.value[facet.attribute] = selectedFacet.value[
-      //     facet.attribute
-      //   ].filter((f) => f !== item.text);
-      //   return;
-      // }
-
-      // selectedFacet.value[facet.attribute].push(item.text);
     console.log({selectedFacet});
-    //}
-
-  }
-    
-    // const handleFilter = () => {
-    //   console.log(this);
-    //   filterCheck.value = !filterCheck.value;
-    // }
-
-    productCount.value = 1;
-    console.log("SearchData-out", searchFacets);
+    //Filtering data with facets
+    const selectFilter = (facet, item) => {
+      console.log("1st", selectedFacet);
+      if (!selectedFacet.value[facet.attribute]) {
+        Vue.set(selectedFacet.value, facet.attribute, []);
+      }
+      if (selectedFacet.value[facet.attribute].find((f) => f === item.text)) {
+        selectedFacet.value[facet.attribute] = selectedFacet.value[
+          facet.attribute
+        ].filter((f) => f !== item.text);
+        return;
+      }
+      console.log("2nd", selectedFacet);
+      selectedFacet.value[facet.attribute].push(item.text);
+      console.log("3rd", selectedFacet);
+      let filtObjtest = {
+          "discount_band": [
+              "0 to 10%",
+              "20 to 30%"
+          ],
+          "brand": [
+              "Anew"
+          ]
+      }
+      changeFilters(selectedFacet.value);
+    };
 
     return {
       th,
@@ -585,10 +585,8 @@ export default {
       addItemToCart,
       qty,
       addItemToCart1,
-      filterCheck,
       handleFilter,
       selectFilter,
-      isFilterSelected
     };
   },
   components: {
