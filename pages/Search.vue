@@ -39,6 +39,7 @@ import { useUiHelpers } from "~/composables";
 import { ref, computed, onMounted } from "@vue/composition-api";
 import { getCurrentInstance } from "@vue/composition-api";
 import LazyHydrate from "vue-lazy-hydration";
+import {apiApptus} from '../helpers/Apptus.helper';
 
 export default {
   name: "Search",
@@ -56,11 +57,8 @@ export default {
     const { query } = instance.$router.history.current;
     console.log({ query });
     onMounted(() => {
-      var apiApptus = window.esalesAPI({
-        market: "UK",
-        clusterId: "wFE4AE5CF",
-      });
-      apiApptus
+      
+      apiApptus(window)
         .panel("/search-page/search-result-zone", {
           window_first: 1,
           window_last: 10,
