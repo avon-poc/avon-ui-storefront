@@ -243,6 +243,7 @@ h4 {
 }
 .sf-icon {
   fill: var(--c-primary);
+  background: #fff;
   path {
     fill: var(--c-primary);
   }

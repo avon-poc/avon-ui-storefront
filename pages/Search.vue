@@ -506,8 +506,10 @@ export default {
 
       // adding facets to search query object
       if (facetsByQuery) {
-        facet.add("discount_band", facetsByQuery);
+        facet.add("discount_band", facetsByQuery).add("brand", 'anew');
         filterObj = { ...filterObj, facets: facet.toString() };
+
+        console.log('facet2apptus', facet.toString());
       }
 
       // Querying Apptus Api
@@ -523,15 +525,15 @@ export default {
           console.log("Error: ", data);
         });
 
-      if(!(query.filters && Object.keys(query.filters).length === 0)){
-        console.log('asdfasdf');
-        selectedFacet.value = {...query.filters};
+      // Re checking pre-selected checkbox on update and updated pre-selected facet
+      if (!(query.filters && Object.keys(query.filters).length === 0)) {
+        selectedFacet.value = { ...query.filters };
+        for (const property in query.filters) {
+          console.log(`${property}: ${query.filters[property]}`);
+          let filters = `${query.filters[property]}`;
+          handleFilter.value = [...handleFilter.value, ...filters.split(",")];
+        }
       }
-
-      //updating filter on reload
-      // handleFilter.value = [
-      //     '0 to 10%'
-      //   ]
     });
 
     // Updating List of facets available
@@ -543,10 +545,9 @@ export default {
       };
     });
 
-    console.log({selectedFacet});
     //Filtering data with facets
     const selectFilter = (facet, item) => {
-      console.log("1st", selectedFacet);
+      // console.log("1st", selectedFacet);
       if (!selectedFacet.value[facet.attribute]) {
         Vue.set(selectedFacet.value, facet.attribute, []);
       }
@@ -556,19 +557,10 @@ export default {
         ].filter((f) => f !== item.text);
         return;
       }
-      console.log("2nd", selectedFacet);
+      // console.log("2nd", selectedFacet);
       selectedFacet.value[facet.attribute].push(item.text);
-      console.log("3rd", selectedFacet);
-      let filtObjtest = {
-          "discount_band": [
-              "0 to 10%",
-              "20 to 30%"
-          ],
-          "brand": [
-              "Anew"
-          ]
-      }
-      changeFilters(selectedFacet.value);
+      // console.log("3rd", selectedFacet);
+      changeFilters({...selectedFacet.value});
     };
 
     return {
