@@ -16,12 +16,12 @@
           <div>
             <SfHeading
               :level="2"
-              :title="data.name && data.name.en"
+              :title="data.name && data.name[locale]"
               class="navbar__title"
             />
             <SfHeading
               :level="3"
-              :title="data.description && data.description.en"
+              :title="data.description && data.description[locale]"
               class="navbar__title"
             />
           </div>
@@ -62,7 +62,7 @@
             v-for="(product, i) in buyListProducts.value"
             :key="i"
             :style="{ '--index': i }"
-            :title="product.obj && product.obj.masterData.current.name.en"
+            :title="product.obj && product.obj.masterData.current.name[locale]"
             :image="getImage(product)"
             :regular-price="$n(getPrice(product).price, 'currency')"
             :special-price="
@@ -72,7 +72,7 @@
             :isOnWishlist="false"
             :link="
               localePath(
-                `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+                `/p/${product.obj.id}/${product.obj.masterData.current.slug[locale]}`
               )
             "
             v-model="qty"
@@ -102,7 +102,7 @@
             v-for="(product, i) in getListProducts.value"
             :key="i"
             :style="{ '--index': i }"
-            :title="product.obj && product.obj.masterData.current.name.en"
+            :title="product.obj && product.obj.masterData.current.name[locale]"
             :image="getImage(product)"
             :regular-price="$n(getPrice(product).price, 'currency')"
             :special-price="
@@ -112,7 +112,7 @@
             :isOnWishlist="false"
             :link="
               localePath(
-                `/p/${product.obj.id}/${product.obj.masterData.current.slug.en}`
+                `/p/${product.obj.id}/${product.obj.masterData.current.slug[locale]}`
               )
             "
             v-model="qty"
@@ -190,6 +190,7 @@ import { ref, computed, onMounted } from "@vue/composition-api";
 import useCustomAPI from "../composables/useCustomAPI";
 import LazyHydrate from "vue-lazy-hydration";
 import ProductCard from "../components/ProductCard";
+import { useVSFContext } from '@vue-storefront/core';
 
 export default {
   transition: "fade",
@@ -200,7 +201,7 @@ export default {
     console.log("data", data);
     const { id } = root.$route.params;
     console.log("params", id);
-
+    const { $ct: { config } } = useVSFContext();
     const buyListProducts = ref({});
     const getListProducts = ref({});
     const qty = ref(1);
@@ -270,6 +271,7 @@ export default {
       getListProducts,
       addItemToCart,
       addItemToCart1,
+      locale: config.locale,
       isInCart,
       breadcrumbs: [
         {
