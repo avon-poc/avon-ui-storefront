@@ -85,13 +85,23 @@
               />
               <SfImage
                 :src="
-                  options.variantImage ? options.variantImage[0].label[0] : ''
+                  shadeImage ? shadeImage : options.variantImage[0].label[0]
                 "
-                class="shadeImage"
+                class="shadeImage desktop-only"
                 alt="Vila stripe maxi shirt dress"
                 :width="65"
                 :height="35"
               />
+              <div class="smartphone-only circleShade">
+                <div
+                  class="circleImage"
+                  :style="{
+                    backgroundImage: `url(${
+                      shadeImage ? shadeImage : options.variantImage[0].label[0]
+                    })`,
+                  }"
+                ></div>
+              </div>
             </div>
             <!-- val {{options.variantType[0].value}} -->
             <div
@@ -109,7 +119,9 @@
                 :imagesrc="
                   options.variantImage ? options.variantImage[i].label[0] : ''
                 "
-                @click:shadeChange="changeShade(variant.value)"
+                @click:shadeChange="
+                  changeShade(variant.value, options.variantImage[i].label[0])
+                "
               />
             </div>
             <!-- <SfSelect
@@ -449,6 +461,7 @@ export default {
   setup(props, context) {
     const qty = ref(1);
     const shade = ref("");
+    const shadeImage = ref("");
     const { id } = context.root.$route.params;
     const { products, search } = useProduct("products");
     const {
@@ -460,8 +473,10 @@ export default {
     const { reviews: productReviews, search: searchReviews } = useReview(
       "productReviews"
     );
-    const changeShade = (variant) => {
+    const changeShade = (variant, imagesrc) => {
+      console.log("img>>>>>>>>>>>>>>>", variant);
       shade.value = variant;
+      shadeImage.value = imagesrc;
     };
     // cck custom query func
     // const { search } = useProduct();
@@ -583,6 +598,7 @@ export default {
       shade,
       changeShade,
       isMobile,
+      shadeImage,
     };
   },
   components: {
@@ -696,6 +712,12 @@ export default {
       margin: 0 auto;
       justify-content: flex-end;
     }
+    div {
+      @include for-desktop {
+        width: 360px;
+        text-align: left;
+      }
+    }
   }
   &__drag-icon {
     animation: moveicon 1s ease-in-out infinite;
@@ -714,7 +736,7 @@ export default {
     align-items: center;
     justify-content: flex-end;
     margin: var(--spacer-xs) 0 var(--spacer-xs);
-    a{
+    a {
       @include for-desktop {
         width: 130px;
       }
@@ -905,6 +927,26 @@ export default {
   color: #000;
   font-size: 1.34687rem;
   font-family: Montserrat;
+}
+
+.circleShade {
+  width: 55px;
+  height: 55px;
+  border-radius: 50px;
+  border: 1px solid var(--c-primary);
+  margin-top: -10px;
+}
+.circleImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-top: 6px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: 150%;
+  background-position: 50% 50%;
+  border: 1px solid silver;
 }
 
 .addToBagPDP {
