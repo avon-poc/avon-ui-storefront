@@ -74,12 +74,12 @@
                 <SfPrice :regular="$n(totals.subtotal, 'currency')" />
               </template>
             </SfProperty>
-            <nuxt-link to="/checkout/shipping">
+            <nuxt-link to="/cart">
               <SfButton
                 class="sf-button--full-width color-secondary"
                 @click="toggleCartSidebar"
               >
-                {{ $t('Go to checkout') }}
+                {{ $t('View Bag') }}
               </SfButton>
             </nuxt-link>
           </div>

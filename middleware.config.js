@@ -1,3 +1,4 @@
+const newQuery = require('./queries/customQueries.ts');
 module.exports = {
   integrations: {
     ct: {
@@ -31,9 +32,7 @@ module.exports = {
       },
       customQueries: {
         'my-products-query': ({ query, variables }) => {
-          console.log("queryvt", query);
-          console.log({ variables });
-          return { query, variables }
+          return { query:newQuery, variables }
         }
       }
     }

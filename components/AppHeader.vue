@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header-block">
     <div class="header-avon smartphone-only">
       <div class="topbar">
         <nav>
@@ -181,7 +181,7 @@
         </template>
       </SfSearchBar>
     </div>
-    <div class="desktop-only">
+    <div class="desktop-only main_Wrapper">
       <SfHeader
         data-cy="app-header"
         class="sf-header--has-mobile-search"
@@ -224,7 +224,7 @@
             </SfButton>
             <SfButton
               class="sf-button--pure sf-header__action"
-              @click="routeCart"
+              @click="toggleCartSidebar"
             >
               <SfIcon
                 class="sf-header__icon"
@@ -505,6 +505,14 @@ export default {
     #e5231b 100%
   );
 }
+.header-block{
+  border:1px solid #8d97a05e;
+  .main_Wrapper{
+    -webkit-box-shadow: 1px 12px 15px -16px grey;
+    -moz-box-shadow: 1px 12px 15px -16px grey;
+    box-shadow: 1px 12px 15px -16px grey;
+  }
+}
 
 .sf-header {
   --header-padding: var(--spacer-sm);
@@ -527,6 +535,64 @@ export default {
   bottom: 40%;
   left: 40%;
 }
+.top_navigation {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  a {
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 100;
+    color: #999;
+    position: relative;
+    padding: 12px 12px;
+    text-transform: uppercase;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: transparent;
+    &:hover {
+      border-bottom-color: #7f28c4;
+      text-decoration: none;
+      color: #7f28c4;
+    }
+  }
+}
+.category_navigation {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  border-top: solid;
+  border-image-slice: 1;
+  border-top-width: 3px;
+  border-image-source: linear-gradient(
+    to right,
+    #7f28c4 -6%,
+    #e2197c 62%,
+    #e5231b 100%
+  );
+  a {
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 100;
+    width: 190px;
+    color: #999;
+    position: relative;
+    padding: 12px;
+    text-transform: uppercase;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: transparent;
+    &:hover {
+      border-bottom-color: #7f28c4;
+      text-decoration: none;
+      color: #7f28c4;
+    }
+  }
+}
+/*Mobile Css */
 .header-avon {
   box-shadow: 0px -9px 20px grey;
   padding-bottom: 6px;
