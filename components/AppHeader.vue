@@ -18,11 +18,24 @@
               v-bind:style="{ left: menuLeftPosition }"
             >
               <div class="top_navigation">
-                <a
-                  v-for="category in categoryList"
-                  :href="'/c/' + category.slug"
-                  :key="category.id"
-                  >{{ category.name
+                <ul id="nav">
+                  <li v-for="category in categoryList"                
+                  :key="category.id">
+                <!-- <a :href="'/c/' + category.slug" >              -->
+                  {{ category.name
+                  }}<SfIcon
+                    icon="chevron_right"
+                    class="chevron_right"
+                    size="xxs"
+                    color="grey"
+                    viewBox="0 0 24 24"
+                    :coverage="1"
+               /> <!-- </a> -->
+                <ul>
+                  <li v-for="subCat in category.children"
+                  :key="subCat.id">
+                  <a :href="'/c/' + category.slug+'/'+subCat.slug"              
+                  >{{ subCat.name
                   }}<SfIcon
                     icon="chevron_right"
                     class="chevron_right"
@@ -31,8 +44,12 @@
                     viewBox="0 0 24 24"
                     :coverage="1"
                 /></a>
+                  </li>
+                </ul>
+                </li>
+                </ul>
               </div>
-              <div class="category_navigation">
+              <!-- <div class="category_navigation">
                 <a
                   :href="'/c/' + category.slug"
                   v-for="category in subCategories"
@@ -46,7 +63,7 @@
                     viewBox="0 0 24 24"
                     :coverage="1"
                 /></a>
-              </div>
+              </div> -->
             </aside>
           </div>
         </nav>
@@ -369,13 +386,13 @@ export default {
     const searchBarRef = ref(null);
     const { categories: cat1, search: search1 } = useCategory("categories");
 
-    const subCategories = computed(() => {
-      return {
-        ...cat1.value.filter((cat) => {
-          return cat.parent != null;
-        }),
-      };
-    });
+    // const subCategories = computed(() => {
+    //   return {
+    //     ...cat1.value.filter((cat) => {
+    //       return cat.parent != null;
+    //     }),
+    //   };
+    // });
 
      const routeCart = () => {
       return root.$router.push(`/cart`);
@@ -468,7 +485,6 @@ export default {
     });
 
     return {
-      subCategories,
       toggleMenu,
       menuLeftPosition,
       menuOpen,
@@ -712,4 +728,12 @@ export default {
     }
   }
 }
+#nav li ul {
+      display:none;
+    }
+
+    /* show child elements when hovering over list item */
+    #nav li:hover ul {
+      display:block;
+    }
 </style>
