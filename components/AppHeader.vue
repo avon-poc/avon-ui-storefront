@@ -18,35 +18,59 @@
               v-bind:style="{ left: menuLeftPosition }"
             >
               <div class="top_navigation">
-                <ul id="nav">
-                  <li v-for="category in categoryList"                
-                  :key="category.id">
-                <!-- <a :href="'/c/' + category.slug" >              -->
-                  {{ category.name
-                  }}<SfIcon
-                    icon="chevron_right"
-                    class="chevron_right"
-                    size="xxs"
-                    color="grey"
-                    viewBox="0 0 24 24"
-                    :coverage="1"
-               /> <!-- </a> -->
-                <ul>
-                  <li v-for="subCat in category.children"
-                  :key="subCat.id">
-                  <a :href="'/c/' + category.slug+'/'+subCat.slug"              
-                  >{{ subCat.name
-                  }}<SfIcon
-                    icon="chevron_right"
-                    class="chevron_right"
-                    size="xxs"
-                    color="grey"
-                    viewBox="0 0 24 24"
-                    :coverage="1"
-                /></a>
+                <ul class="mobNav" id="nav">
+                  <li
+                    class="mobNav__parent"
+                    v-for="(category, index) in categoryList"
+                    :key="category.id"
+                    @click="(e) => toggleSubMenu(e)"
+                  >
+                    {{ category.name }}
+                    <SfIcon
+                      icon="chevron_right"
+                      class="chevron_right"
+                      size="xxs"
+                      color="grey"
+                      viewBox="0 0 24 24"
+                      :coverage="1"
+                    />
+                    <ul class="mobNav__child" :class="`child-${index}`">
+                      <p>
+                        <SfIcon
+                          icon="chevron_left"
+                          class="chevron_left"
+                          size="xxs"
+                          color="grey"
+                          viewBox="0 0 24 24"
+                          :coverage="1"
+                        />{{ category.name }}
+                      </p>
+                      <li>
+                        <a :href="'/c/' + category.slug">
+                          All {{ category.name }}
+                          <SfIcon
+                            icon="chevron_right"
+                            class="chevron_right"
+                            size="xxs"
+                            color="grey"
+                            viewBox="0 0 24 24"
+                            :coverage="1"
+                        /></a>
+                      </li>
+                      <li v-for="subCat in category.children" :key="subCat.id">
+                        <a :href="'/c/' + category.slug + '/' + subCat.slug"
+                          >{{ subCat.name
+                          }}<SfIcon
+                            icon="chevron_right"
+                            class="chevron_right"
+                            size="xxs"
+                            color="grey"
+                            viewBox="0 0 24 24"
+                            :coverage="1"
+                        /></a>
+                      </li>
+                    </ul>
                   </li>
-                </ul>
-                </li>
                 </ul>
               </div>
               <!-- <div class="category_navigation">
@@ -160,7 +184,9 @@
                 class="whiteFill"
               ></path>
             </svg>
-            <span class="cart-count" v-if="cartTotalItems">{{ cartTotalItems }}</span>
+            <span class="cart-count" v-if="cartTotalItems">{{
+              cartTotalItems
+            }}</span>
           </div>
         </div>
       </div>
@@ -377,6 +403,7 @@ export default {
     } = useUiHelpers();
     let menuLeftPosition = ref("-1000px");
     let menuOpen = ref(false);
+    const subMenuToggle = ref(false);
     const { result, search } = useFacet();
     const { isAuthenticated, load: loadUser } = useUser();
     const { cart, load: loadCart } = useCart();
@@ -394,7 +421,7 @@ export default {
     //   };
     // });
 
-     const routeCart = () => {
+    const routeCart = () => {
       return root.$router.push(`/cart`);
     };
 
@@ -425,7 +452,18 @@ export default {
     const toggleMenu = () => {
       menuLeftPosition.value = !menuOpen.value ? "0px" : "-1000px";
       menuOpen.value = !menuOpen.value;
-      console.log("toggling", menuLeftPosition.value);
+    };
+
+    const toggleSubMenu = (e) => {
+      let target = e.target.childNodes[3];
+      if (typeof target != "undefined") {
+        target.style.right = subMenuToggle.value ? "1000px" : "0px";
+        subMenuToggle.value = !subMenuToggle.value;
+      } else {
+        console.log("aDSF", e.target);
+        e.target.parentElement.style.right = "1000px";
+        subMenuToggle.value = false;
+      }
     };
 
     onSSR(async () => {
@@ -486,6 +524,7 @@ export default {
 
     return {
       toggleMenu,
+      toggleSubMenu,
       menuLeftPosition,
       menuOpen,
       accountIcon,
@@ -503,7 +542,7 @@ export default {
       searchBarRef,
       isMobile,
       categoryList,
-      routeCart
+      routeCart,
     };
   },
 };
@@ -521,9 +560,9 @@ export default {
     #e5231b 100%
   );
 }
-.header-block{
-  border:1px solid #8d97a05e;
-  .main_Wrapper{
+.header-block {
+  border: 1px solid #8d97a05e;
+  .main_Wrapper {
     -webkit-box-shadow: 1px 12px 15px -16px grey;
     -moz-box-shadow: 1px 12px 15px -16px grey;
     box-shadow: 1px 12px 15px -16px grey;
@@ -550,30 +589,6 @@ export default {
   position: absolute;
   bottom: 40%;
   left: 40%;
-}
-.top_navigation {
-  margin-top: 30px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-  a {
-    cursor: pointer;
-    font-size: 15px;
-    font-weight: 100;
-    color: #999;
-    position: relative;
-    padding: 12px 12px;
-    text-transform: uppercase;
-    border-bottom: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: transparent;
-    &:hover {
-      border-bottom-color: #7f28c4;
-      text-decoration: none;
-      color: #7f28c4;
-    }
-  }
 }
 .category_navigation {
   display: flex;
@@ -702,6 +717,7 @@ export default {
     justify-content: flex-start;
     flex-direction: column;
     width: 80%;
+    height: 100%;
     position: absolute;
     z-index: 999;
     left: -1000px;
@@ -728,12 +744,61 @@ export default {
     }
   }
 }
-#nav li ul {
-      display:none;
+.top_navigation {
+  font-family: var(--font-family);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  .mobNav {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    &__parent {
+      &:hover {
+        border-bottom-color: #7f28c4;
+        text-decoration: none;
+        color: #7f28c4;
+      }
     }
-
-    /* show child elements when hovering over list item */
-    #nav li:hover ul {
-      display:block;
+    &__child {
+      transition: 0.8s ease-in;
+      padding: 0;
+      position: absolute;
+      background: #fff;
+      z-index: 999;
+      width: 100%;
+      right: 1000px;
+      top: 0;
+      p {
+        padding: 10px 10px;
+        margin: 10px 0px 0px 0px;
+        border-bottom: 1px solid black;
+        .sf-icon {
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
     }
+    li {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: 500;
+      color: rgb(0, 0, 0);
+      padding: 12px 20px;
+      text-transform: uppercase;
+      border-bottom: solid;
+      border-bottom-width: 1px;
+      border-bottom-color: transparent;
+      list-style: none;
+      border-bottom: 1px solid #928f8f;
+      line-height: 30px;
+      & > .sf-icon {
+        display: inline-block;
+        position: absolute;
+        right: 20px;
+      }
+    }
+  }
+}
 </style>
