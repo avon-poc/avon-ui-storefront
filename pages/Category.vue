@@ -545,16 +545,32 @@ export default {
     const selectedFilters = ref({});
     const qty = ref(1);
     onMounted(() => {
-      context.root.$scrollTo(context.root.$el, 2000);
-      if (!facets.value.length) return;
-      selectedFilters.value = facets.value.reduce(
-        (prev, curr) => ({
-          ...prev,
-          [curr.id]: curr.options.filter((o) => o.selected).map((o) => o.id),
-        }),
-        {}
-      );
-    });
+      // context.root.$scrollTo(context.root.$el, 2000);
+      // if (!facets.value.length) return;
+      // selectedFilters.value = facets.value.reduce(
+      //   (prev, curr) => ({
+      //     ...prev,
+      //     [curr.id]: curr.options.filter((o) => o.selected).map((o) => o.id),
+      //   }),
+      //   {}
+      // );
+      //apptus call
+      var apiApptus = window.esalesAPI({
+            market: "UK",
+            clusterId: "wFE4AE5CF",
+      });    
+      apiApptus && apiApptus.panel('/product-list-page', {
+            window_first: 1,
+            window_last: 10,
+            product_key:'1137_UK',
+            category_tree:'section_UK',
+            sort_by: 'price asc'
+          }).then(function(data) {
+              console.log(data);
+          }).catch(function(data) {
+              console.log('Error: ', data);
+          });
+      });
 
     const isFilterSelected = (facet, option) =>
       (selectedFilters.value[facet.id] || []).includes(option.id);
