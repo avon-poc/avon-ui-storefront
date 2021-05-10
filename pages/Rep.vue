@@ -59,14 +59,21 @@ export default {
     SfButton,
     SfIcon,
   },
-  setup(props, {}) {
+  setup(props, {root}) {
     const rep = [
       { name: "Rosetta Allen", location: "London" },
       { name: "Louise Fitzpatrick", location: "London" },
     ];
-
+    console.log(root.$cookies.get('vsf-locale'));
+    const onSelect=(item)=> {
+     // this.selected = item.name;
+      sessionStorage.setItem("rep", item.name);
+      root.$cookies.set('rep',item.name);
+      root.$router.push("/avon/"+item.name);
+    }
     return {
       rep,
+      onSelect
     };
   },
   data() {
@@ -76,11 +83,11 @@ export default {
     };
   },
   methods: {
-    onSelect(item) {
-      this.selected = item.name;
-      sessionStorage.setItem("rep", item.name);
-      this.$router.push("/avon/"+item.name);
-    },
+    // onSelect(item) {
+    //   this.selected = item.name;
+    //   sessionStorage.setItem("rep", item.name);
+    //   this.$router.push("/avon/"+item.name);
+    // },
   },
 };
 </script>
@@ -109,7 +116,7 @@ export default {
   background-color: blueviolet;
   color: white;
   margin: 0;
-  width: 40%;
+  width: 62%;
 }
 
 </style>

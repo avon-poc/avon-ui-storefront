@@ -31,7 +31,14 @@ module.exports = {
         country: 'GB'
       },
       customQueries: {
-        'my-products-query': ({ query, variables }) => {
+        'attached-flow-products-query': ({ query, variables }) => {
+          console.log('attach')
+          const newVariables ={...variables}
+          newVariables.channelId ='fc300ba3-3220-4d31-98a7-6c0d38a9eb5f';
+          return { query:newQuery, variables:newVariables }
+        },
+        'unattached-flow-products-query': ({ query, variables }) => {
+          console.log('Unattach')
           return { query:newQuery, variables }
         }
       }

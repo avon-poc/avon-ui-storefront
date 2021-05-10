@@ -545,7 +545,11 @@ export default {
     );
 
     onSSR(async () => {
-      await search({ id, customQuery: { products: "my-products-query" } });
+      console.log('rep ',context.root.$cookies.get('rep'))
+      if(context.root.$cookies.get('rep'))
+      await search({ id, customQuery: { products: "attached-flow-products-query" } });
+      else
+       await search({ id, customQuery: { products: "unattached-flow-products-query" } });
       await searchRelatedProducts({ catId: [categories.value[0]], limit: 8 });
       await searchReviews({ productId: id });
       await searchCategory({ catId: [categories.value[0]] });
