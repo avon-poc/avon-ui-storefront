@@ -609,6 +609,20 @@ export default {
       return variant ? variant.value : "";
     };
 
+    const getTicketId = (productkey) => {
+      let product = esaleProducts.value.find((obj) => {
+        return obj.key === productkey;
+      });
+      return product.key;
+    };
+
+    const addToCart = (obj) => {
+      //-- productkey have to get from CT
+      let ticketId=getTicketId(productkey);
+       apiApptus.notify.addToCart(ticketId);
+      addItemToCart(obj);
+    };
+
     return {
       ...uiState,
       th,

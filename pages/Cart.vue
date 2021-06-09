@@ -231,7 +231,7 @@ import {
 import MobileStoreBanner from "~/components/MobileStoreBanner.vue";
 import LazyHydrate from "vue-lazy-hydration";
 import CartProduct from "~/components/CartProduct.vue";
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref, onMounted } from "@vue/composition-api";
 import {
   useCart,
   useUser,
@@ -286,7 +286,7 @@ export default {
     const coupons = computed(() => cartGetters.getCoupons(cart.value));
     const promoCode = ref("");
     // console.log("coupons>>>", coupons.value);
-
+console.log("cart pdts", products);
     const remCoupon = (couponObj) => {
       promoCode.value = "";
       removeCoupon({
@@ -298,6 +298,7 @@ export default {
       console.log("updateQuantity>>>", product, typeof parseInt(quantity));
       updateItemQty({ product, quantity: parseInt(quantity) });
     };
+     
 
     onSSR(async () => {
       await loadCart();
@@ -307,7 +308,21 @@ export default {
       //     cartGetters.getItemQty(products.value[0])
       // );
     });
-
+    onMounted(()=> {
+      var api = window.esalesAPI({
+            market: "UK",
+            clusterId: "wFE4AE5CF",
+          });
+        api.panel('/cart-page', {
+            window_first: 1,
+            window_last: 10,
+        cart:'16085-212398419373'
+        }).then(function(data) {
+            console.log(data);
+        }).catch(function(data) {
+            console.log('Error: ', data);
+        });
+    });
     return {
       isAuthenticated,
       products,

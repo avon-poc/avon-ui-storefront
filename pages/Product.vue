@@ -217,7 +217,7 @@
               :canAddToCart="stock > 0"
               class="product__add-to-cart addToBagPDP"
               @click="
-                addItem({ product, quantity: parseInt(qty), repId: 'rep01' })
+                addItemToCart1(product, qty)
               "
             >
               <template v-slot:quantity-select-input>
@@ -234,11 +234,7 @@
                   class="sf-add-to-cart__button addToBagPDP atbbtnPDP"
                   :disabled="loading"
                   @click="
-                    addItem({
-                      product,
-                      quantity: parseInt(qty),
-                      repId: 'rep01',
-                    })
+                    addItemToCart1(product, qty)
                   "
                 >
                   Add to Bag
@@ -373,9 +369,14 @@
               <p>{{ careInstructions }}</p>
             </div>
           </SfTab>
-        </SfTabs>
+        </SfTabs>        
       </LazyHydrate>
     </div>
+    <div>    
+  </div>
+  <div class="desktop-only" v-if="recomApptusData && recomApptusData.length > 0">
+    <RecommendedProductCard :recomData='recomApptusData' />
+  </div>
 
     <!-- <LazyHydrate when-visible>
       <RelatedProducts
@@ -442,6 +443,7 @@ import {
 } from "@storefront-ui/vue/src/utilities/mobile-observer.js";
 import ShadeWrap from "~/components/ShadeWrap";
 import BottomRepBlock from "~/components/BottomRepBlock";
+import RecommendedProductCard from "../components/RecommendedProductCard";
 
 export default {
   name: "Product",
@@ -449,8 +451,10 @@ export default {
   setup(props, context) {
     const qty = ref(1);
     const shade = ref("");
+    const recomApptusData = ref("");
     const { id } = context.root.$route.params;
     const { products, search } = useProduct("products");
+    console.log("products", products);
     const {
       products: relatedProducts,
       search: searchRelatedProducts,
@@ -475,6 +479,7 @@ export default {
           attributes: context.root.$route.query,
         })[0]
     );
+    console.log("product PDP community", product);
     const options = computed(() =>
       productGetters.getAttributes(products.value, [
         "color",
@@ -516,6 +521,14 @@ export default {
       }))
     );
 
+    const addItemToCart1 = (product, qty) => {
+      var apiApptus = window.esalesAPI({
+        market: "UK",
+        clusterId: "wFE4AE5CF",
+      });
+      apiApptus.notify.nonEsalesAddToCart({ productKey:"1137_UK"});
+      addItem({ product, quantity: parseInt(qty) });
+    };
     const { categories: catNew, search: searchCategory } = useCategory(
       "categories1"
     );
@@ -544,8 +557,34 @@ export default {
         itemsPerPage: 20,
         term: undefined,
       });
+      
     });
-
+    onMounted(()=> {
+      var apiApptus = window.esalesAPI({
+            market: "UK",
+            clusterId: "wFE4AE5CF",
+      });
+        apiApptus.panel('/product-detail-page', {
+          window_first: 1,
+          window_last: 5,
+          product_key:'1137_UK',
+          category_tree:'section_UK'
+        }).then(function(data) {
+            console.log("apptus",data);
+            recomApptusData.value = data && data.response && data.response.recommendations 
+              && data.response.recommendations[0]
+              && data.response.recommendations[0].products;
+            console.log("recomApptusData.value", recomApptusData.value);
+        }).catch(function(data) {
+            console.log('Error: ', data);
+            console.log("apptus",data);
+            recomApptusData.value = data && data.response && data.response.recommendations 
+              && data.response.recommendations[0]
+              && data.response.recommendations[0].products;
+            console.log("recomApptusData.value", recomApptusData.value);
+        });
+    });
+    
     const updateFilter = (filter) => {
       context.root.$router.push({
         path: context.root.$route.path,
@@ -583,6 +622,8 @@ export default {
       shade,
       changeShade,
       isMobile,
+      addItemToCart1,
+      recomApptusData
     };
   },
   components: {
@@ -611,6 +652,7 @@ export default {
     SfLink,
     SfQuantitySelector,
     BottomRepBlock,
+    RecommendedProductCard
   },
   data() {
     return {
@@ -912,4 +954,7 @@ export default {
     content: "";
   }
 }
+.sf-tabs.product__tabs{
+  margin-bottom: 0px;
+} 
 </style>

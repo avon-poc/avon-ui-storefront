@@ -29,7 +29,7 @@ fragment Images on ProductVariant {
 }
 
 fragment Price on ProductVariant {
-  price(currency: $currency, country: $country) {
+  price(currency: $currency, country: $country, channelId: $channelId) {
     ...DefaultProductPrice
   }
 }
@@ -49,6 +49,7 @@ fragment Attributes on ProductVariant {
 
 fragment DefaultVariant on ProductVariant {
   id
+  key
   sku
   ...Images
   ...Price
@@ -65,6 +66,7 @@ query products(
   $acceptLanguage: [Locale!]
   $currency: Currency!
   $country: Country!
+  $channelId: String
 ) {
   products(
     where: $where
